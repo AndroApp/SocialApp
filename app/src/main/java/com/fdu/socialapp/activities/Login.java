@@ -7,11 +7,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.custom.User;
 
@@ -24,11 +28,13 @@ public class Login extends Activity {
         super.onCreate(savedInstanceState);
         AVAnalytics.trackAppOpened(getIntent());
 
-        if (User.getMyUser().isLogin()){
+        if (User.getMyUser().isLogin()) {
+            // 允许用户使用应用
             Intent intent = new Intent(this, Main.class);
             startActivity(intent);
             finish();
         }
+
         setContentView(R.layout.activity_login);
 
 
@@ -59,11 +65,25 @@ public class Login extends Activity {
     }
 
     public void login(View view){
-        Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
-        User.getMyUser().login();
-        Intent intent = new Intent(this, Main.class);
-        startActivity(intent);
-        finish();
+        EditText Text_username = (EditText) findViewById(R.id.userName);
+        EditText Text_pwd = (EditText) findViewById(R.id.pwd);
+        String username = Text_username.getText().toString();
+        String pwd = Text_pwd.getText().toString();
+        AVUser.logInInBackground(username, pwd, new LogInCallback() {
+            public void done(AVUser user, AVException e) {
+                if (user != null) {
+                    // 登录成功
+                    Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Login.this, Main.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // 登录失败
+                    Toast.makeText(Login.this, "登录失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
 
