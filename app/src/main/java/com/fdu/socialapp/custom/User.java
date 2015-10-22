@@ -1,13 +1,19 @@
 package com.fdu.socialapp.custom;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
+import com.fdu.socialapp.activities.Login;
+import com.fdu.socialapp.activities.Main;
 
 
 /**
@@ -15,9 +21,8 @@ import com.avos.avoscloud.SaveCallback;
  * A class for users
  */
 public class User extends Application{
-    private final String TAG = "User";
 
-    private String userName;
+    private final String TAG = "User";
     private String installationId;
 
     private static User myUser;
@@ -28,22 +33,6 @@ public class User extends Application{
     public boolean isLogin() {
         if(AVUser.getCurrentUser() != null) return true;
         else return false;
-    }
-    public String getUserName() {
-        if (isLogin()) return userName;
-        else return null;
-    }
-    public void setUserName(String name) {
-        userName = name;
-    }
-
-
-    public void logout() {
-        AVUser user = AVUser.getCurrentUser();
-        user.put("installationId", null);
-        user.put("num", 0);
-        user.saveInBackground();
-        AVUser.logOut();
     }
 
     public String  getInstallationId(){ return installationId; }
@@ -57,15 +46,12 @@ public class User extends Application{
                 if (e == null) {
                     // 保存成功
                     installationId = AVInstallation.getCurrentInstallation().getInstallationId();
-
                     // 关联  installationId 到用户表等操作……
-
                 } else {
                     Log.e(TAG, e.getMessage());
                 }
             }
         });
-        userName = null;
         myUser = this;
     }
 }

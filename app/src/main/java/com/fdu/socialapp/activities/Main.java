@@ -1,6 +1,7 @@
 package com.fdu.socialapp.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -54,10 +55,6 @@ public class Main extends Activity {
         tabs.setTextColor(getResources().getColor(R.color.TextColorDark));
         tabs.setBackgroundColor(getResources().getColor(R.color.white));
 
-        AVUser user = AVUser.getCurrentUser();
-        user.put("installationId", User.getMyUser().getInstallationId());
-        user.saveInBackground();
-
         PushService.setDefaultPushCallback(this, Main.class);
         PushService.subscribe(this, "private", Login.class);
 
@@ -80,8 +77,22 @@ public class Main extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.logOut) {
-            User.getMyUser().logout();
-            finish();
+            AVUser user = AVUser.getCurrentUser();
+            if(user != null){
+                user.put("installationId", null);
+                user.put("num", 0);
+                user.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(AVException e) {
+                        if (e == null) {
+                            AVUser.logOut();
+                        }
+                    }
+                });
+                Intent intent = new Intent(Main.this, Login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
             return true;
         }
 

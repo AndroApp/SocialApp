@@ -16,12 +16,12 @@ import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.custom.User;
 
 public class Login extends Activity {
     private static final String TAG = "Login";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +72,27 @@ public class Login extends Activity {
         AVUser.logInInBackground(username, pwd, new LogInCallback() {
             public void done(AVUser user, AVException e) {
                 if (user != null) {
-                    // 登录成功
-                    Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Login.this, Main.class);
-                    startActivity(intent);
-                    finish();
+                    if(user.getInt("num") == 0){
+                        // 登录成功
+                        Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        user.put("installationId", User.getMyUser().getInstallationId());
+                        user.put("num", 1);
+                        user.saveInBackground(new SaveCallback() {
+                            public void done(AVException e) {
+                                if (e == null) {
+                                    // 保存成功
+                                    Intent intent = new Intent(Login.this, Main.class);
+                                    startActivity(intent);
+                                } else {
+                                    // 保存失败，输出错误信息
+                                    Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                    else{
+                        Toast.makeText(Login.this, "该账号已在其他设备登录", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     // 登录失败
                     Toast.makeText(Login.this, "登录失败", Toast.LENGTH_SHORT).show();
