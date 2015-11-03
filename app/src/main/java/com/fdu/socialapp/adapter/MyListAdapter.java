@@ -1,4 +1,4 @@
-package com.fdu.socialapp.custom;
+package com.fdu.socialapp.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

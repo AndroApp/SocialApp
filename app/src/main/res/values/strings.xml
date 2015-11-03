@@ -28,5 +28,7 @@
     <string name="scanQRcode">扫一扫</string>
     <string name="feedback">反馈</string>
     <string name="logOut">注销</string>
+    <string name="unspport_message_type">暂不支持此消息类型</string>
+    <string name="message_is_null">消息不能为空</string>
 
 </resources>

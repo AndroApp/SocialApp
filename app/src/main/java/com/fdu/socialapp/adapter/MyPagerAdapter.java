@@ -1,4 +1,4 @@
-package com.fdu.socialapp.custom;
+package com.fdu.socialapp.adapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -8,6 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.fdu.socialapp.R;
+import com.fdu.socialapp.custom.NavFragment;
+import com.fdu.socialapp.custom.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,34 +1,27 @@
-package com.fdu.socialapp.custom;
+package com.fdu.socialapp.model;
 
-import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
-import com.fdu.socialapp.activities.Login;
-import com.fdu.socialapp.activities.Main;
 
 
 /**
  * Created by mao on 2015/10/12 0012.
- * A class for users
  */
-public class User extends Application{
+public class App extends Application{
 
-    private final String TAG = "User";
+    private final String TAG = "App";
     private String installationId;
 
-    private static User myUser;
+    private static App myApp;
 
-    public static User getMyUser(){
-        return myUser;
+    public static App getMyApp(){
+        return myApp;
     }
     public boolean isLogin() {
         if(AVUser.getCurrentUser() != null) return true;
@@ -52,6 +45,6 @@ public class User extends Application{
                 }
             }
         });
-        myUser = this;
+        myApp = this;
     }
 }

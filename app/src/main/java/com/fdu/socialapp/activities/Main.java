@@ -12,11 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVInstallation;
-import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVPush;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
@@ -25,16 +22,20 @@ import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SendCallback;
 import com.fdu.socialapp.R;
-import com.fdu.socialapp.custom.MyPagerAdapter;
+import com.fdu.socialapp.adapter.MyPagerAdapter;
 import com.fdu.socialapp.custom.PagerSlidingTabStrip;
-import com.fdu.socialapp.custom.User;
 
 
-import java.util.Date;
 import java.util.List;
 
-public class Main extends Activity {
+public class Main extends BaseActivity {
     private static final String TAG = "Main";
+
+    public static void goMainActivityFromActivity(Activity fromActivity) {
+        Intent intent = new Intent(fromActivity, Main.class);
+        fromActivity.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,11 +87,17 @@ public class Main extends Activity {
                     public void done(AVException e) {
                         if (e == null) {
                             AVUser.logOut();
+                            Intent intent = new Intent(Main.this, Login.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         }
                     }
                 });
+            }
+            else{
+                Toast.makeText(Main.this, "异常！用户为空", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Main.this, Login.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
             return true;

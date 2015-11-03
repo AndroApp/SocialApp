@@ -16,8 +16,9 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SignUpCallback;
 import com.fdu.socialapp.R;
+import com.fdu.socialapp.model.MsnaUser;
 
-public class SignUp extends Activity {
+public class SignUp extends BaseActivity {
     private EditText username;
     private EditText pwd;
     private EditText pwd2;
@@ -187,11 +188,7 @@ public class SignUp extends Activity {
     /** Called when the user clicks the RegCommit button */
     public void regCommit(View view) {
         if(username_checked == 1 && pwd_checked == 1 && pwd2_checked == 1){
-            AVUser user = new AVUser();
-            user.setUsername(username.getText().toString());
-            user.setPassword(pwd.getText().toString());
-            user.put("num", 0);
-            user.signUpInBackground(new SignUpCallback() {
+            MsnaUser.signUpByNameAndPwd(username.getText().toString(), pwd.getText().toString(), new SignUpCallback() {
                 public void done(AVException e) {
                     if (e == null) {
                         // successfully

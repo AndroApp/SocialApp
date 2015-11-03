@@ -7,38 +7,44 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.fdu.socialapp.R;
-import com.fdu.socialapp.custom.User;
+import com.fdu.socialapp.model.App;
+import com.fdu.socialapp.model.MsnaUser;
 
-public class Login extends Activity {
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class Login extends BaseActivity {
     private static final String TAG = "Login";
+
+    @Bind(R.id.userName)
+    TextView txtUserName;
+
+    @Bind(R.id.pwd)
+    TextView txtPwd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AVAnalytics.trackAppOpened(getIntent());
 
-        if (User.getMyUser().isLogin()) {
+        if (App.getMyApp().isLogin()) {
             // 允许用户使用应用
             Intent intent = new Intent(this, Main.class);
             startActivity(intent);
-            finish();
         }
 
         setContentView(R.layout.activity_login);
-
-
-
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -65,32 +71,17 @@ public class Login extends Activity {
     }
 
     public void login(View view){
-        EditText Text_username = (EditText) findViewById(R.id.userName);
-        EditText Text_pwd = (EditText) findViewById(R.id.pwd);
-        String username = Text_username.getText().toString();
-        String pwd = Text_pwd.getText().toString();
-        AVUser.logInInBackground(username, pwd, new LogInCallback() {
-            public void done(AVUser user, AVException e) {
+        final String username = txtUserName.getText().toString().trim();
+        final String pwd = txtPwd.getText().toString().trim();
+        MsnaUser.logInInBackground(username, pwd, new LogInCallback<MsnaUser>() {
+            public void done(MsnaUser user, AVException e) {
                 if (user != null) {
-                    if(user.getInt("num") == 0){
+                    if (user.getInt("num") == 0) {
                         // 登录成功
                         Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
-                        user.put("installationId", User.getMyUser().getInstallationId());
-                        user.put("num", 1);
-                        user.saveInBackground(new SaveCallback() {
-                            public void done(AVException e) {
-                                if (e == null) {
-                                    // 保存成功
-                                    Intent intent = new Intent(Login.this, Main.class);
-                                    startActivity(intent);
-                                } else {
-                                    // 保存失败，输出错误信息
-                                    Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
-                    else{
+                        AVUser.getCurrentUser(MsnaUser.class).updateUserInfo(Login.this);
+
+                    } else {
                         Toast.makeText(Login.this, "该账号已在其他设备登录", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -98,7 +89,7 @@ public class Login extends Activity {
                     Toast.makeText(Login.this, "登录失败", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        }, MsnaUser.class);
 
     }
 
