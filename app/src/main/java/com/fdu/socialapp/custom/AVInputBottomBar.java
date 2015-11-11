@@ -20,6 +20,7 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by mao on 2015/10/28 0028.
+ * 聊天界面底部输入框
  */
 public class AVInputBottomBar extends LinearLayout {
     /**
@@ -35,12 +36,12 @@ public class AVInputBottomBar extends LinearLayout {
     private EditText contentView;
     public AVInputBottomBar(Context context) {
         super(context);
-        //initView(context);
+        initView(context);
     }
 
     public AVInputBottomBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        //initView(context);
+        initView(context);
     }
 
     private void initView(final Context context){

@@ -9,10 +9,12 @@ import com.fdu.socialapp.viewholder.RightTextHolder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by mao on 2015/10/28 0028.
+ * 对话框的Adapter
  */
 public class MultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -22,7 +24,7 @@ public class MultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     // 时间间隔最小为十分钟
     private final long TIME_INTERVAL = 10 * 60 * 1000;
 
-    private List<AVIMMessage> messageList = new ArrayList<AVIMMessage>();
+    private List<AVIMMessage> messageList = new ArrayList<>();
 
     public MultipleItemAdapter() {
     }
@@ -38,7 +40,8 @@ public class MultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void addMessage(AVIMMessage message) {
-        messageList.addAll(Arrays.asList(message));
+        messageList.addAll(Collections.singletonList(message));
+
     }
 
     public AVIMMessage getFirstMessage() {
@@ -62,11 +65,27 @@ public class MultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        //((AVCommonViewHolder)holder).bindData(messageList.get(position));
+        if (holder instanceof LeftTextHolder) {
+            ((LeftTextHolder)holder).bindData(messageList.get(position));
+            ((LeftTextHolder)holder).showTimeView(shouldShowTime(position));
+        } else if (holder instanceof RightTextHolder) {
+            ((RightTextHolder)holder).bindData(messageList.get(position));
+            ((RightTextHolder)holder).showTimeView(shouldShowTime(position));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return messageList.size();
+    }
+
+    private boolean shouldShowTime(int position) {
+        if (position == 0) {
+            return true;
+        }
+        long lastTime = messageList.get(position - 1).getTimestamp();
+        long curTime = messageList.get(position).getTimestamp();
+        return curTime - lastTime > TIME_INTERVAL;
     }
 }

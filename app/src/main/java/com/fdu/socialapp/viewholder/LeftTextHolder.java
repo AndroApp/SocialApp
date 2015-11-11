@@ -11,6 +11,7 @@ import com.fdu.socialapp.R;
 import com.fdu.socialapp.event.LeftChatItemClickEvent;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -18,6 +19,7 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by mao on 2015/11/3 0003.
+ * 显示在左侧的对话框Holder
  */
 public class LeftTextHolder extends AVCommonViewHolder{
     @Bind(R.id.chat_left_text_tv_time)
@@ -43,7 +45,7 @@ public class LeftTextHolder extends AVCommonViewHolder{
     @Override
     public void bindData(Object o) {
         AVIMMessage message = (AVIMMessage)o;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm", Locale.CHINA);
         String time = dateFormat.format(message.getTimestamp());
 
         String content =  getContext().getString(R.string.unspport_message_type);

@@ -14,6 +14,7 @@ import com.fdu.socialapp.R;
 import com.fdu.socialapp.event.ImTypeMessageResendEvent;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -21,6 +22,7 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by mao on 2015/11/3 0003.
+ *显示在右侧的对话框Holder
  */
 public class RightTextHolder extends AVCommonViewHolder {
     @Bind(R.id.chat_right_text_tv_time)
@@ -57,11 +59,11 @@ public class RightTextHolder extends AVCommonViewHolder {
     @Override
     public void bindData(Object o) {
         message = (AVIMMessage) o;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
         String time = dateFormat.format(message.getTimestamp());
 
         String content = getContext().getString(R.string.unspport_message_type);
-        ;
+
         if (message instanceof AVIMTextMessage) {
             content = ((AVIMTextMessage) message).getText();
         }
