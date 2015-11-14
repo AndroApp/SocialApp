@@ -56,32 +56,36 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="25dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/titlebar"
-        android:elevation="4dp"
-        android:orientation="horizontal"
-        android:onClick="test">
+        android:layout_height="match_parent"
+        android:background="@color/backgroud">
+        <LinearLayout
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/testMessage"
+                style="@style/TextStyle"
+                android:textSize="22sp"
+                android:layout_gravity="center"/>
+            <Button
+                android:id="@+id/test"
+                android:layout_marginStart="8dp"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:text="Send"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:background="@drawable/round_button"
+                android:onClick="send"/>
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/testMessage"
-            android:layout_width="wrap_content"
-            style="@style/TextStyle"
-            android:textSize="22sp"
-            android:hint="The user name to push"
-            android:layout_gravity="center"/>
-        <Button
-            android:id="@+id/test"
-            android:layout_marginStart="20dp"
-            android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:text="Send"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:background="@drawable/round_button"
-            android:onClick="test"/>
     </LinearLayout>
+
+
 
 
 </LinearLayout>

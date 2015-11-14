@@ -1,6 +1,5 @@
 package com.fdu.socialapp.custom;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,7 +19,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.fdu.socialapp.NotificationUtils;
 import com.fdu.socialapp.R;
-import com.fdu.socialapp.adapter.MultipleItemAdapter;
+import com.fdu.socialapp.adapter.ChatItemAdapter;
 import com.fdu.socialapp.event.ImTypeMessageEvent;
 import com.fdu.socialapp.event.ImTypeMessageResendEvent;
 import com.fdu.socialapp.event.InputBottomBarTextEvent;
@@ -33,10 +32,10 @@ import de.greenrobot.event.EventBus;
  * Created by mao on 2015/10/28 0028.
  * 聊天界面的Fragment
  */
-public class ChatFragment extends Fragment {
+public class ChatFragment extends BaseFragment {
     protected AVIMConversation imConversation;
 
-    protected MultipleItemAdapter itemAdapter;
+    protected ChatItemAdapter itemAdapter;
     protected RecyclerView recyclerView;
     protected LinearLayoutManager layoutManager;
     protected SwipeRefreshLayout refreshLayout;
@@ -53,7 +52,7 @@ public class ChatFragment extends Fragment {
         inputBottomBar = (AVInputBottomBar) view.findViewById(R.id.fragment_chat_inputbottombar);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        itemAdapter = new MultipleItemAdapter();
+        itemAdapter = new ChatItemAdapter();
         recyclerView.setAdapter(itemAdapter);
 
         EventBus.getDefault().register(this);
@@ -121,7 +120,7 @@ public class ChatFragment extends Fragment {
                 if (filterException(e)) {
                     itemAdapter.setMessageList(list);
                     recyclerView.setAdapter(itemAdapter);
-                    itemAdapter.notifyDataSetChanged();
+                    itemAdapter.notifyItemRangeInserted(0, list.size());
                     scrollToBottom();
                 }
             }
@@ -142,12 +141,14 @@ public class ChatFragment extends Fragment {
                 AVIMTextMessage message = new AVIMTextMessage();
                 message.setText(textEvent.sendContent);
                 itemAdapter.addMessage(message);
-                itemAdapter.notifyDataSetChanged();
+                itemAdapter.notifyItemInserted(itemAdapter.getItemCount() - 1);
+                //itemAdapter.notifyDataSetChanged();
                 scrollToBottom();
                 imConversation.sendMessage(message, new AVIMConversationCallback() {
                     @Override
                     public void done(AVIMException e) {
-                        itemAdapter.notifyDataSetChanged();
+                        itemAdapter.notifyItemChanged(itemAdapter.getItemCount() - 1);
+                        //itemAdapter.notifyDataSetChanged();
                     }
                 });
             }
@@ -162,7 +163,8 @@ public class ChatFragment extends Fragment {
         if (null != imConversation && null != event &&
                 imConversation.getConversationId().equals(event.conversation.getConversationId())) {
             itemAdapter.addMessage(event.message);
-            itemAdapter.notifyDataSetChanged();
+            itemAdapter.notifyItemInserted(itemAdapter.getItemCount() - 1);
+            //itemAdapter.notifyDataSetChanged();
             scrollToBottom();
         }
     }

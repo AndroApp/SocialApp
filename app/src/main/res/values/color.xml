@@ -7,7 +7,7 @@
     <color name="deepGray">#BDBDBD</color>
     <color name="TextColorDark">#f8353434</color>
     <color name="TextColor_hint">#A3B1CA</color>
-
+    <color name="chat_base_color_text_black">#3e3e39</color>
     <color name="common_blue">#2c97e8</color>
     <color name="common_gray">#898989</color>
 

@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.fdu.socialapp.viewholder.LeftTextHolder;
+import com.fdu.socialapp.viewholder.MyClientManager;
 import com.fdu.socialapp.viewholder.RightTextHolder;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by mao on 2015/10/28 0028.
  * 对话框的Adapter
  */
-public class MultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int ITEM_LEFT_TEXT = 0;
     private final int ITEM_RIGHT_TEXT = 1;
@@ -26,7 +27,7 @@ public class MultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private List<AVIMMessage> messageList = new ArrayList<>();
 
-    public MultipleItemAdapter() {
+    public ChatItemAdapter() {
     }
 
     public void setMessageList(List<AVIMMessage> messages) {
@@ -51,6 +52,17 @@ public class MultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return null;
         }
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        AVIMMessage message = messageList.get(position);
+        if (message.getFrom().equals(MyClientManager.getInstance().getClientId())) {
+            return ITEM_RIGHT_TEXT;
+        } else {
+            return ITEM_LEFT_TEXT;
+        }
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ITEM_LEFT_TEXT) {

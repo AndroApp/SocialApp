@@ -2,6 +2,7 @@ package com.fdu.socialapp.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -21,16 +23,26 @@ import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SendCallback;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.adapter.MyPagerAdapter;
 import com.fdu.socialapp.custom.PagerSlidingTabStrip;
+import com.fdu.socialapp.model.MsnaUser;
+import com.fdu.socialapp.service.PushManager;
+import com.fdu.socialapp.viewholder.MyClientManager;
 
 
 import java.util.List;
 
+import butterknife.Bind;
+
 public class Main extends BaseActivity {
     private static final String TAG = "Main";
-
     public static void goMainActivityFromActivity(Activity fromActivity) {
         Intent intent = new Intent(fromActivity, Main.class);
         fromActivity.startActivity(intent);
@@ -56,9 +68,6 @@ public class Main extends BaseActivity {
         tabs.setTextColor(getResources().getColor(R.color.TextColorDark));
         tabs.setBackgroundColor(getResources().getColor(R.color.white));
 
-        PushService.setDefaultPushCallback(this, Main.class);
-        PushService.subscribe(this, "private", Login.class);
-
     }
 
     @Override
@@ -78,42 +87,47 @@ public class Main extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.logOut) {
-            AVUser user = AVUser.getCurrentUser();
-            if(user != null){
-                user.put("installationId", null);
-                user.put("num", 0);
-                user.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(AVException e) {
-                        if (e == null) {
-                            AVUser.logOut();
-                            Intent intent = new Intent(Main.this, Login.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
-                    }
-                });
-            }
-            else{
-                Toast.makeText(Main.this, "异常！用户为空", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Main.this, Login.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
+            logout();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-    public void userInfo(View view){
+
+    public void logout() {
+        AVUser user = AVUser.getCurrentUser();
+        if (user != null) {
+            user.put(Constants.INSTALLATION, null);
+            user.put("num", 0);
+            user.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if (filterException(e)) {
+                        PushManager.getInstance().unsubscribeCurrentUserChannel();
+                        AVUser.logOut();
+                        finish();
+                        Intent intent = new Intent(Main.this, Launch.class);
+                        startActivity(intent);
+                    }
+                }
+            });
+        } else {
+            toast("异常！用户为空");
+            Intent intent = new Intent(Main.this, Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
+
+    public void userInfo(View view) {
 
     }
 
-    public void setting(View view){
+    public void setting(View view) {
 
     }
 
-    public void test(View view){
+    public void test(View view) {
         Log.i(TAG, "test");
         EditText testUser = (EditText) findViewById(R.id.testMessage);
         String username = testUser.getText().toString();
@@ -121,7 +135,7 @@ public class Main extends BaseActivity {
         query.whereEqualTo("username", username);
         query.findInBackground(new FindCallback<AVUser>() {
             public void done(List<AVUser> objects, AVException e) {
-                if (e == null) {
+                if (filterException(e)) {
                     // 查询成功
                     for (AVUser user : objects) {
                         AVQuery pushQuery = AVInstallation.getQuery();
@@ -129,26 +143,24 @@ public class Main extends BaseActivity {
                         AVPush.sendMessageInBackground("message to installation", pushQuery, new SendCallback() {
                             @Override
                             public void done(AVException e) {
-                                if(e == null){
-                                    Toast.makeText(Main.this, "push success", Toast.LENGTH_SHORT).show();
-                                }
-                                else{
-                                    Toast.makeText(Main.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                if (filterException(e)) {
+                                    toast("push success!");
                                 }
                             }
                         });
                     }
-                } else {
-                    // 查询出错
-                    Toast.makeText(Main.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
     }
 
-
+    public void send(View view) {
+        EditText testUser = (EditText) findViewById(R.id.testMessage);
+        final String userId = testUser.getText().toString().trim();
+        Intent intent = new Intent(Main.this, SingleChat.class);
+        intent.putExtra(Constants.MEMBER_ID, userId);
+        startActivity(intent);
+    }
 
 
 }

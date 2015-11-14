@@ -8,43 +8,43 @@ import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.im.v2.AVIMMessageManager;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
+import com.fdu.socialapp.MessageHandler;
+import com.fdu.socialapp.service.PushManager;
 
 
 /**
  * Created by mao on 2015/10/12 0012.
+ * 初始化工作
  */
 public class App extends Application{
 
     private final String TAG = "App";
-    private String installationId;
 
     private static App myApp;
 
     public static App getMyApp(){
         return myApp;
     }
-    public boolean isLogin() {
-        if(AVUser.getCurrentUser() != null) return true;
-        else return false;
-    }
-
-    public String  getInstallationId(){ return installationId; }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        myApp = this;
         AVOSCloud.initialize(this, "zFeMVYB4tMuBVvjcAWt8uBOh", "IInViyO81sNlBNj4TUSoXyQH");
+        AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(this));
         AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
             public void done(AVException e) {
                 if (e == null) {
                     // 保存成功
-                    installationId = AVInstallation.getCurrentInstallation().getInstallationId();
                     // 关联  installationId 到用户表等操作……
                 } else {
                     Log.e(TAG, e.getMessage());
                 }
             }
         });
-        myApp = this;
+        PushManager.getInstance().init(this);
+
     }
 }

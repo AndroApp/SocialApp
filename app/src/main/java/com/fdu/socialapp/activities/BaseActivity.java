@@ -14,6 +14,7 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by mao on 2015/11/3 0003.
+ * 所有activity的基类
  */
 public class BaseActivity extends Activity {
     @Override
@@ -54,7 +55,8 @@ public class BaseActivity extends Activity {
         EventBus.getDefault().unregister(this);
     }
 
-    protected void onViewCreated() {}
+    protected void onViewCreated() {
+    }
 
     protected boolean filterException(Exception e) {
         if (e != null) {
@@ -89,5 +91,6 @@ public class BaseActivity extends Activity {
         startActivity(intent);
     }
 
-    public void onEvent(EmptyEvent event) {}
+    public void onEvent(EmptyEvent event) {
+    }
 }

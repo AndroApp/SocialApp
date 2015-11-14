@@ -23,6 +23,8 @@
     <string name="RegCommit">提   交</string>
     <string name="title_activity_main">Main</string>
     <string name="title_activity_sign_up">SignUp</string>
+    <string name="title_activity_launch">Launch</string>
+    <string name="title_activity_single_chat">SingleChat</string>
     <string name="startSessions">发起会话</string>
     <string name="addFriends">添加好友</string>
     <string name="scanQRcode">扫一扫</string>

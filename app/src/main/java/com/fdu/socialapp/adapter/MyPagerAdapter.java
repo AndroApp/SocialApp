@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.custom.NavFragment;
 import com.fdu.socialapp.custom.PagerSlidingTabStrip;
+import com.fdu.socialapp.model.MsnaUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +26,17 @@ public class MyPagerAdapter extends FragmentPagerAdapter implements ViewPager.On
     private final int[] CONTENTS = {R.id.sessions_layout, R.id.contacts_layout, R.id.etc_layout, R.id.aboutme_layout};
     private final int[] ICONS = {R.drawable.ic_chat_black_24dp, R.drawable.ic_contacts_black_24dp, R.drawable.ic_public_black_24dp, R.drawable.ic_perm_identity_black_24dp};
     List<NavFragment> fragments = new ArrayList<>();
-    public MyPagerAdapter(FragmentManager fm){
+
+    public MyPagerAdapter(FragmentManager fm) {
         super(fm);
-        for(int content:CONTENTS){
+        for (int content : CONTENTS) {
             NavFragment fragment = new NavFragment();
-            Bundle args =new Bundle();
+            Bundle args = new Bundle();
             args.putInt(NavFragment.ARG_POSITION, content);
             fragment.setArguments(args);
             fragments.add(fragment);
         }
+
     }
 
     @Override

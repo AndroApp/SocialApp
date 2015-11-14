@@ -27,7 +27,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:singleLine">true</item>
-        <item name="android:background">@drawable/border</item>
+
     </style>
     <!-- PagerSlidingTabStrip的自定义样式 -->
     <style name="pagerTabStype">

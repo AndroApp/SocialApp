@@ -10,14 +10,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.fdu.socialapp.R;
+import com.fdu.socialapp.model.MsnaUser;
 
 /**
  * Created by mao on 2015/10/16 0016.
  *
  */
-public class NavFragment extends Fragment {
+public class NavFragment extends BaseFragment {
     public static final String ARG_POSITION = "layout_id";
     private static final String TAG="NavFragment";
     public NavFragment() {
@@ -49,6 +51,7 @@ public class NavFragment extends Fragment {
             case R.id.aboutme_layout:
                 Log.i(TAG, "CreateView: aboutMe");
                 view = inflater.inflate(R.layout.fragment_aboutme, container,false);
+                ((TextView)view.findViewById(R.id.userInfoName)).setText(MsnaUser.getCurrentUser().getUsername());
                 break;
 
             case R.id.etc_layout:

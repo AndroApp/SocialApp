@@ -8,43 +8,42 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.model.App;
 import com.fdu.socialapp.model.MsnaUser;
+import com.fdu.socialapp.viewholder.MyClientManager;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class Login extends BaseActivity {
     private static final String TAG = "Login";
 
     @Bind(R.id.userName)
-    TextView txtUserName;
+    protected TextView txtUserName;
 
     @Bind(R.id.pwd)
-    TextView txtPwd;
+    protected TextView txtPwd;
 
+    public static void goLoginActivityFromActivity(Activity fromActivity) {
+        Intent intent = new Intent(fromActivity, Login.class);
+        fromActivity.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AVAnalytics.trackAppOpened(getIntent());
-
-        if (App.getMyApp().isLogin()) {
-            // 允许用户使用应用
-            Intent intent = new Intent(this, Main.class);
-            startActivity(intent);
-        }
-
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
     }
 
     @Override
@@ -59,18 +58,10 @@ public class Login extends BaseActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.logOut) {
-            Log.i("shit", "退出1");
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
-    public void login(View view){
+    public void login(View view) {
         final String username = txtUserName.getText().toString().trim();
         final String pwd = txtPwd.getText().toString().trim();
         MsnaUser.logInInBackground(username, pwd, new LogInCallback<MsnaUser>() {
@@ -78,23 +69,48 @@ public class Login extends BaseActivity {
                 if (user != null) {
                     if (user.getInt("num") == 0) {
                         // 登录成功
-                        Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
-                        AVUser.getCurrentUser(MsnaUser.class).updateUserInfo(Login.this);
-
+                        updateUserInfo(user);
                     } else {
-                        Toast.makeText(Login.this, "该账号已在其他设备登录", Toast.LENGTH_SHORT).show();
+                        toast("该账号已在其他设备登录");
                     }
                 } else {
                     // 登录失败
-                    Toast.makeText(Login.this, "登录失败", Toast.LENGTH_SHORT).show();
+                    toast("登录失败");
                 }
             }
         }, MsnaUser.class);
 
     }
 
+    public void updateUserInfo(final MsnaUser user) {
+        AVInstallation installation = AVInstallation.getCurrentInstallation();
+        if (installation != null) {
+            user.put(Constants.INSTALLATION, installation);
+            user.put("num", 1);
+            user.saveInBackground(new SaveCallback() {
+                public void done(AVException e) {
+                    if (filterException(e)) {
+                        //根据用户名生成一个Client
+                        MyClientManager.getInstance().open(user.getUsername(), new AVIMClientCallback() {
+                            @Override
+                            public void done(AVIMClient avimClient, AVIMException e) {
+                                if (filterException(e)) {
+                                    toast("登录成功");
+                                    Main.goMainActivityFromActivity(Login.this);
+                                    finish();
+                                }
+                            }
+                        });
 
-    public void toSignUp(View view){
+                    }
+                }
+            });
+        }
+
+    }
+
+
+    public void toSignUp(View view) {
         Intent intent = new Intent(this, SignUp.class);
         startActivity(intent);
     }

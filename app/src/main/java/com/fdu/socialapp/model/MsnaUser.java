@@ -16,42 +16,36 @@ import com.avos.avoscloud.FollowCallback;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.fdu.socialapp.Constants;
+import com.fdu.socialapp.R;
+import com.fdu.socialapp.activities.BaseActivity;
+import com.fdu.socialapp.activities.Login;
 import com.fdu.socialapp.activities.Main;
+import com.fdu.socialapp.viewholder.MyClientManager;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by mao on 2015/10/28 0028.
+ * 用户的抽象
  */
 public class MsnaUser extends AVUser{
     public static final String TAG = "MsnaUser";
     public static final String USERNAME = "username";
     public static final String AVATAR = "avatar";
     public static final String LOCATION = "location";
-    public static final String INSTALLATION = "installation";
 
     public static MsnaUser getCurrentUser() {
         return getCurrentUser(MsnaUser.class);
     }
 
-    public void updateUserInfo(final Activity activity) {
-        AVInstallation installation = AVInstallation.getCurrentInstallation();
-        if (installation != null) {
-            put(INSTALLATION, installation);
-            put("num", 1);
-            saveInBackground(new SaveCallback() {
-                public void done(AVException e) {
-                    if (e == null) {
-                        // 保存成功
-                        Main.goMainActivityFromActivity(activity);
-                    } else {
-                        // 保存失败，输出错误信息
-                        Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
+    public static boolean isLogin() {
+        return (AVUser.getCurrentUser() != null);
     }
+
 
     public static void signUpByNameAndPwd(String name, String password, SignUpCallback callback) {
         AVUser user = new AVUser();
@@ -79,8 +73,12 @@ public class MsnaUser extends AVUser{
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-        q.setCachePolicy(cachePolicy);
-        q.setMaxCacheAge(TimeUnit.MINUTES.toMillis(1));
-        q.findInBackground(findCallback);
+        if (q != null) {
+            q.setCachePolicy(cachePolicy);
+            q.setMaxCacheAge(TimeUnit.MINUTES.toMillis(1));
+            q.findInBackground(findCallback);
+        }
     }
+
+
 }

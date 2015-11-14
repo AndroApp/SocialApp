@@ -35,7 +35,7 @@
 
     <style name="TextStyle">
         <item name="android:layout_width">280dp</item>
-        <item name="android:layout_height">55dp</item>
+        <item name="android:layout_height">70dp</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:paddingRight">6dp</item>
         <item name="android:paddingLeft">6dp</item>
@@ -44,7 +44,6 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:singleLine">true</item>
-        <item name="android:background">@drawable/border</item>
         <item name="android:elevation">2dp</item>
     </style>
 
@@ -58,5 +57,28 @@
         <item name="pstsIndicatorHeight">2dp</item>
         <item name="pstsIndicatorColor">@color/myPrimaryLight</item>
 
+    </style>
+
+    <style name="My">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="My.ImageView">
+        <item name="android:contentDescription">@string/app_name</item>
+    </style>
+
+    <style name="My.TextView">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="My.TextView._Black">
+        <item name="android:textColor">@color/chat_base_color_text_black</item>
+    </style>
+
+    <style name="My.ImageView.Photo_Avatar">
+        <item name="android:layout_width">45dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:scaleType">fitXY</item>
     </style>
 </resources>
