@@ -27,6 +27,7 @@ public class Launch extends BaseActivity {
             updateUserInfo(MsnaUser.getCurrentUser());
         } else {
             Login.goLoginActivityFromActivity(Launch.this);
+            finish();
         }
     }
 
@@ -48,6 +49,7 @@ public class Launch extends BaseActivity {
                                     finish();
                                 } else {
                                     Login.goLoginActivityFromActivity(Launch.this);
+                                    finish();
                                 }
                             }
                         });
