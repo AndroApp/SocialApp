@@ -19,7 +19,7 @@
             android:layout_marginLeft="10dp"
             android:src="@mipmap/ic_launcher" />
 
-        <TextView
+        <View
             android:id="@+id/unread"
             android:layout_width="12dp"
             android:layout_height="12dp"

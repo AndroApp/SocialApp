@@ -1,4 +1,4 @@
-package com.fdu.socialapp;
+package com.fdu.socialapp.utils;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.avos.avospush.notification.NotificationCompat;
+import com.fdu.socialapp.R;
 
 import java.util.LinkedList;
 import java.util.List;

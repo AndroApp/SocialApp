@@ -17,7 +17,7 @@ import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
-import com.fdu.socialapp.NotificationUtils;
+import com.fdu.socialapp.utils.NotificationUtils;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.adapter.ChatItemAdapter;
 import com.fdu.socialapp.event.ImTypeMessageEvent;
@@ -96,11 +96,6 @@ public class ChatFragment extends BaseFragment {
         NotificationUtils.removeTag(imConversation.getConversationId());
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
-    }
 
     public void setConversation(AVIMConversation conversation) {
         imConversation = conversation;

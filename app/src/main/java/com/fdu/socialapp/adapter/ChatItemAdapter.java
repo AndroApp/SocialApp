@@ -5,11 +5,10 @@ import android.view.ViewGroup;
 
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.fdu.socialapp.viewholder.LeftTextHolder;
-import com.fdu.socialapp.viewholder.MyClientManager;
+import com.fdu.socialapp.model.MyClientManager;
 import com.fdu.socialapp.viewholder.RightTextHolder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -77,13 +76,14 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        //((AVCommonViewHolder)holder).bindData(messageList.get(position));
-        if (holder instanceof LeftTextHolder) {
-            ((LeftTextHolder)holder).bindData(messageList.get(position));
-            ((LeftTextHolder)holder).showTimeView(shouldShowTime(position));
-        } else if (holder instanceof RightTextHolder) {
-            ((RightTextHolder)holder).bindData(messageList.get(position));
-            ((RightTextHolder)holder).showTimeView(shouldShowTime(position));
+        if (position >= 0 && position < messageList.size()) {
+            if (holder instanceof LeftTextHolder) {
+                ((LeftTextHolder) holder).bindData(messageList.get(position));
+                ((LeftTextHolder) holder).showTimeView(shouldShowTime(position));
+            } else if (holder instanceof RightTextHolder) {
+                ((RightTextHolder) holder).bindData(messageList.get(position));
+                ((RightTextHolder) holder).showTimeView(shouldShowTime(position));
+            }
         }
     }
 

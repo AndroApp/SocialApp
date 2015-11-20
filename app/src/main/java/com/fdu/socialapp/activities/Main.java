@@ -2,7 +2,6 @@ package com.fdu.socialapp.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -10,8 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.avos.avoscloud.AVException;
@@ -20,26 +17,16 @@ import com.avos.avoscloud.AVPush;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
-import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SendCallback;
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.adapter.MyPagerAdapter;
 import com.fdu.socialapp.custom.PagerSlidingTabStrip;
-import com.fdu.socialapp.model.MsnaUser;
 import com.fdu.socialapp.service.PushManager;
-import com.fdu.socialapp.viewholder.MyClientManager;
 
 
 import java.util.List;
-
-import butterknife.Bind;
 
 public class Main extends BaseActivity {
     private static final String TAG = "Main";
@@ -161,6 +148,5 @@ public class Main extends BaseActivity {
         intent.putExtra(Constants.MEMBER_ID, userId);
         startActivity(intent);
     }
-
 
 }

@@ -38,11 +38,6 @@ public class NavFragment extends BaseFragment {
         int position = getArguments().getInt(ARG_POSITION);
         View view;
         switch (position){
-            case R.id.sessions_layout:
-                Log.i(TAG, "CreateView: sessions");
-                view = inflater.inflate(R.layout.fragment_sessions, container,false);
-                break;
-
             case R.id.contacts_layout:
                 Log.i(TAG, "CreateView: contacts");
                 view = inflater.inflate(R.layout.fragment_contacts, container,false);

@@ -1,13 +1,14 @@
 package com.fdu.socialapp.model;
 
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.fdu.socialapp.ConversationCacheUtils;
-import com.fdu.socialapp.viewholder.MyClientManager;
+import com.fdu.socialapp.utils.ConversationCacheUtils;
+import com.fdu.socialapp.service.ColoredBitmapProvider;
 
 import java.util.List;
 
@@ -102,6 +103,42 @@ public class MyConversation {
         }
     }
 
+    public static Bitmap getConversationIcon(AVIMConversation conversation) {
+        return ColoredBitmapProvider.getInstance().createColoredBitmapByHashString(conversation.getConversationId());
+    }
+
+    /**
+     * 获取单聊对话的另外一个人的 userId
+     * @return 如果非法对话，则为 selfId
+     */
+    public static String otherIdOfConversation(AVIMConversation conversation) {
+        if (isValidConversation(conversation)) {
+            if (getType(conversation) == ConversationType.Single) {
+                List<String> members = conversation.getMembers();
+                if (members.size() == 2) {
+                    if (members.get(0).equals(MyClientManager.getInstance().getClientId())) {
+                        return members.get(1);
+                    } else {
+                        return members.get(0);
+                    }
+                }
+            }
+        }
+        // 尽管异常，返回可以使用的 userId
+        return MyClientManager.getInstance().getClientId();
+    }
+
+    public static String nameOfConversation(AVIMConversation conversation) {
+        if (isValidConversation(conversation)) {
+            if (getType(conversation) == ConversationType.Single) {
+                return otherIdOfConversation(conversation);
+            } else {
+                return conversation.getName();
+            }
+        } else {
+            return "";
+        }
+    }
 
 
     public static abstract class MultiConversationsCallback {

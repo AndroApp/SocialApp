@@ -3,7 +3,6 @@ package com.fdu.socialapp.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +18,8 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.R;
-import com.fdu.socialapp.model.App;
 import com.fdu.socialapp.model.MsnaUser;
-import com.fdu.socialapp.viewholder.MyClientManager;
+import com.fdu.socialapp.model.MyClientManager;
 
 import butterknife.Bind;
 

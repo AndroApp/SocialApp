@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.activities.Login;
 import com.fdu.socialapp.activities.SingleChat;
-import com.fdu.socialapp.viewholder.MyClientManager;
+import com.fdu.socialapp.model.MyClientManager;
 
 /**
  * Created by mao on 2015/11/14 0014.

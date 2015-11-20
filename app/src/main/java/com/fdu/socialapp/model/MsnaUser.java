@@ -1,30 +1,15 @@
 package com.fdu.socialapp.model;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.FollowCallback;
-import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
-import com.fdu.socialapp.Constants;
-import com.fdu.socialapp.R;
-import com.fdu.socialapp.activities.BaseActivity;
-import com.fdu.socialapp.activities.Login;
-import com.fdu.socialapp.activities.Main;
-import com.fdu.socialapp.viewholder.MyClientManager;
 
 import java.util.concurrent.TimeUnit;
 

@@ -11,7 +11,8 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessageHandler;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.fdu.socialapp.event.ImTypeMessageEvent;
 import com.fdu.socialapp.service.NotificationBroadcastReceiver;
-import com.fdu.socialapp.viewholder.MyClientManager;
+import com.fdu.socialapp.utils.NotificationUtils;
+import com.fdu.socialapp.model.MyClientManager;
 
 import de.greenrobot.event.EventBus;
 

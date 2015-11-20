@@ -5,14 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toolbar;
 
-import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.custom.ChatFragment;
-import com.fdu.socialapp.viewholder.MyClientManager;
+import com.fdu.socialapp.model.MyClientManager;
+import com.fdu.socialapp.model.MyConversation;
+import com.fdu.socialapp.utils.ConversationCacheUtils;
 
 import butterknife.Bind;
 
@@ -39,9 +40,17 @@ public class SingleChat extends BaseActivity {
             }
         });
 
-        String memberId = getIntent().getStringExtra(Constants.MEMBER_ID);
-        toolbar.setTitle(memberId);
-        getConversation(memberId);
+        String conversationId = getIntent().getStringExtra(Constants.CONVERSATION_ID);
+        if (conversationId != null) {
+            AVIMConversation con = ConversationCacheUtils.getCacheConversation(conversationId);
+            chatFragment.setConversation(con);
+            toolbar.setTitle(MyConversation.otherIdOfConversation(con));
+        } else {
+            String memberId = getIntent().getStringExtra(Constants.MEMBER_ID);
+            toolbar.setTitle(memberId);
+            getConversation(memberId);
+        }
+
     }
 
     @Override

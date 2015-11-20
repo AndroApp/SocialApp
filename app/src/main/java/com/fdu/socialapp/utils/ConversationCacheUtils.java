@@ -1,11 +1,12 @@
-package com.fdu.socialapp;
+package com.fdu.socialapp.utils;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMConversationQuery;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
-import com.fdu.socialapp.viewholder.MyClientManager;
+import com.fdu.socialapp.Constants;
+import com.fdu.socialapp.model.MyClientManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;

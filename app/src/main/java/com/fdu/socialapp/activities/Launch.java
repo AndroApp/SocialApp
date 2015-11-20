@@ -12,7 +12,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.model.MsnaUser;
-import com.fdu.socialapp.viewholder.MyClientManager;
+import com.fdu.socialapp.model.MyClientManager;
 
 
 public class Launch extends BaseActivity {

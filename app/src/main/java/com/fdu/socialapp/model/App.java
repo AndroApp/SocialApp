@@ -19,14 +19,11 @@ import com.fdu.socialapp.service.PushManager;
  * 初始化工作
  */
 public class App extends Application{
+    public static boolean debug = true;
+    public static App myApp;
 
     private final String TAG = "App";
 
-    private static App myApp;
-
-    public static App getMyApp(){
-        return myApp;
-    }
 
     @Override
     public void onCreate() {

@@ -1,4 +1,4 @@
-package com.fdu.socialapp.viewholder;
+package com.fdu.socialapp.model;
 
 import android.text.TextUtils;
 
@@ -9,7 +9,6 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
-import com.fdu.socialapp.model.ConversationType;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,7 +20,7 @@ import java.util.Map;
  * 管理client
  */
 public class MyClientManager {
-    private static final String KEY_UPDATED_AT = "updatedAt";
+    public static final String KEY_UPDATED_AT = "updatedAt";
     private static MyClientManager myClientManager;
     private volatile AVIMClient mClient;
     private String clientId;
