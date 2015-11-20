@@ -95,4 +95,8 @@ public class MyClientManager {
             }
         });
     }
+
+    public AVIMConversationQuery getConversationQuery() {
+        return mClient.getQuery();
+    }
 }
