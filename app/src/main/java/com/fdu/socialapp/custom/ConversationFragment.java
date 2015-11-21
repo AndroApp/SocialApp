@@ -102,7 +102,7 @@ public class ConversationFragment extends BaseFragment {
     }
 
     private void updateConversationList() {
-        conversationManager.findAndCacheRooms(new MyConversation.MultiConversationsCallback() {
+        conversationManager.findRecentConversations(new MyConversation.MultiConversationsCallback() {
             @Override
             public void done(List<MyConversation> conversationList, AVException exception) {
                 swipeRefreshLayout.setRefreshing(false);

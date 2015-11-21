@@ -12,7 +12,7 @@
         android:layout_marginTop="25dp"
         android:background="@drawable/titlebar"
         android:orientation="horizontal"
-        android:elevation="4dp"
+        android:elevation="2dp"
         android:onClick="userInfo">
         <ImageView
             android:id="@+id/userIcon"
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@drawable/titlebar"
-        android:elevation="4dp"
+        android:elevation="2dp"
         android:orientation="horizontal"
         android:onClick="setting">
         <ImageView
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:elevation="4dp"
+            android:elevation="2dp"
             android:orientation="horizontal">
             <EditText
                 android:id="@+id/testMessage"

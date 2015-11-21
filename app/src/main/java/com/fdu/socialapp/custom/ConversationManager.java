@@ -31,50 +31,44 @@ public class ConversationManager {
         return conversationManager;
     }
 
-    public void findAndCacheRooms(final MyConversation.MultiConversationsCallback callback) {
-        final List<MyConversation> conversations = findRecentConversations();
-        List<String> conversationIds = new ArrayList<>();
-        for (MyConversation conversation : conversations) {
-            conversationIds.add(conversation.getConversationId());
-        }
 
-        if (conversationIds.size() > 0) {
-            ConversationCacheUtils.cacheConversations(conversationIds, new ConversationCacheUtils.CacheConversationCallback() {
-                @Override
-                public void done(AVException e) {
-                    if (e != null) {
-                        callback.done(conversations, e);
-                    } else {
-                        callback.done(conversations, null);
-                    }
-                }
-            });
-        } else {
-            callback.done(conversations, null);
-        }
-    }
-
-    private List<MyConversation> findRecentConversations() {
-        final List<MyConversation> list = new ArrayList<>();
+    public void findRecentConversations(final MyConversation.MultiConversationsCallback callback) {
         AVIMConversationQuery query = MyClientManager.getInstance().getClient().getQuery();
-        query.withMembers(Arrays.asList(MyClientManager.getInstance().getClientId()));
+        query.containsMembers(Arrays.asList(MyClientManager.getInstance().getClientId()));
         query.whereEqualTo(ConversationType.ATTR_TYPE_KEY, ConversationType.Single.getValue());
         query.orderByDescending(MyClientManager.KEY_UPDATED_AT);
         query.limit(100);
         query.findInBackground(new AVIMConversationQueryCallback() {
             @Override
-            public void done(List<AVIMConversation> conversations, AVIMException e) {
-                if (e != null) {
-                    for (AVIMConversation conversation : conversations) {
-                        MyConversation m = new MyConversation();
-                        m.setConversationId(conversation.getConversationId());
-                        m.setUnreadCount(0);
-                        list.add(m);
-                    }
+            public void done(List<AVIMConversation> list, AVIMException e) {
+                List<String> conversationIds = new ArrayList<>();
+                final List<MyConversation> conversations = new ArrayList<>();
+
+                for (AVIMConversation c : list) {
+                    MyConversation mConversation = new MyConversation();
+                    conversationIds.add(c.getConversationId());
+
+                    mConversation.setConversationId(c.getConversationId());
+                    mConversation.setUnreadCount(0);
+                    conversations.add(mConversation);
+                }
+
+                if (conversationIds.size() > 0) {
+                    ConversationCacheUtils.cacheConversations(conversationIds, new ConversationCacheUtils.CacheConversationCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            if (e != null) {
+                                callback.done(conversations, e);
+                            } else {
+                                callback.done(conversations, null);
+                            }
+                        }
+                    });
+                } else {
+                    callback.done(conversations, null);
                 }
             }
         });
-        return list;
     }
 
 

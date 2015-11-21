@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.event.ConversationItemClickEvent;
 import com.fdu.socialapp.model.ConversationType;
@@ -55,7 +56,7 @@ public class ConversationItemHolder extends AVCommonViewHolder {
                 avatarView.setImageBitmap(MyConversation.getConversationIcon(avimConversation));
             }
 
-            nameView.setText(avimConversation.getName());
+            nameView.setText(MyConversation.nameOfConversation(avimConversation));
 
             if (myConversation.getUnreadCount() > 0) {
                 unreadView.setVisibility(View.VISIBLE);
@@ -67,7 +68,7 @@ public class ConversationItemHolder extends AVCommonViewHolder {
             if (lastMessage != null) {
                 SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA);
                 timeView.setText(format.format(new Date(lastMessage.getTimestamp())));
-                msgView.setText(lastMessage.getContent());
+                msgView.setText(((AVIMTextMessage)lastMessage).getText());
             }
         }
 

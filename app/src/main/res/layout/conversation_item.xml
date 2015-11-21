@@ -4,79 +4,74 @@
     android:layout_height="60dp"
     android:layout_margin="5dp"
     android:orientation="vertical"
+    android:background="@color/white"
     android:elevation="2dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/avatar"
+        style="@style/My.ImageView.Photo_Avatar"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="10dp"
+        android:src="@mipmap/ic_launcher" />
 
-        <ImageView
-            android:id="@+id/avatar"
-            style="@style/My.ImageView.Photo_Avatar"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:src="@mipmap/ic_launcher" />
+    <View
+        android:id="@+id/unread"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_above="@+id/avatar"
+        android:layout_marginBottom="-18dp"
+        android:layout_marginStart="-10dp"
+        android:layout_toEndOf="@+id/avatar"
+        android:background="@drawable/common_msg_tips"
+        android:gravity="center"
+        android:textColor="#ffffffff"
+        android:textSize="10.0dip" />
 
-        <View
-            android:id="@+id/unread"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_above="@+id/avatar"
-            android:layout_marginBottom="-18dp"
-            android:layout_marginLeft="-10dp"
-            android:layout_toRightOf="@+id/avatar"
-            android:background="@drawable/common_msg_tips"
-            android:gravity="center"
-            android:textColor="#ffffffff"
-            android:textSize="10.0dip" />
+    <TextView
+        android:id="@+id/name_text"
+        style="@style/My.TextView._Black"
+        android:layout_width="wrap_content"
+        android:layout_height="25.0dip"
+        android:layout_marginStart="10.0dip"
+        android:layout_marginEnd="58.0dip"
+        android:layout_toEndOf="@id/avatar"
+        android:ellipsize="end"
+        android:gravity="start|center"
+        android:singleLine="true"
+        android:text="Name"
+        android:textColor="@drawable/recent_name_text_color_selector" />
 
-        <TextView
-            android:id="@+id/name_text"
-            style="@style/My.TextView._Black"
-            android:layout_width="wrap_content"
-            android:layout_height="25.0dip"
-            android:layout_marginLeft="10.0dip"
-            android:layout_marginRight="58.0dip"
-            android:layout_toRightOf="@id/avatar"
-            android:ellipsize="end"
-            android:gravity="left|center"
-            android:singleLine="true"
-            android:textColor="@drawable/recent_name_text_color_selector" />
+    <TextView
+        android:id="@+id/msg_text"
+        android:layout_width="fill_parent"
+        android:layout_height="35.0dip"
+        android:layout_below="@id/name_text"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="35dip"
+        android:layout_toEndOf="@id/avatar"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:paddingLeft="6.0dip"
+        android:paddingRight="6.0dip"
+        android:singleLine="true"
+        android:text="Message"
+        android:textColor="@drawable/recent_message_text_color_selector"
+        android:textSize="15.0sp" />
 
-        <TextView
-            android:id="@+id/msg_text"
-            android:layout_width="fill_parent"
-            android:layout_height="35.0dip"
-            android:layout_below="@id/name_text"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="35.0dip"
-            android:layout_toRightOf="@id/avatar"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:paddingLeft="6.0dip"
-            android:paddingRight="6.0dip"
-            android:singleLine="true"
-            android:textColor="@drawable/recent_message_text_color_selector"
-            android:textSize="15.0sp" />
-
-        <TextView
-            android:id="@+id/time_text"
-            android:layout_width="wrap_content"
-            android:layout_height="25.0dip"
-            android:layout_above="@id/msg_text"
-            android:layout_alignParentRight="true"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_marginRight="10dip"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:padding="0.0dip"
-            android:singleLine="true"
-            android:textColor="@drawable/recent_message_text_color_selector"
-            android:textSize="10.0sp" />
-
-
-    </RelativeLayout>
-
+    <TextView
+        android:id="@+id/time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="25.0dp"
+        android:layout_above="@id/msg_text"
+        android:layout_alignParentEnd="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:padding="0.0dip"
+        android:singleLine="true"
+        android:textColor="@drawable/recent_message_text_color_selector"
+        android:textSize="10.0sp" />
 </RelativeLayout>

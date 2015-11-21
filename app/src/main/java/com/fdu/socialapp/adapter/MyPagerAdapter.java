@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.custom.ConversationFragment;
 import com.fdu.socialapp.custom.NavFragment;
 import com.fdu.socialapp.custom.PagerSlidingTabStrip;
-import com.fdu.socialapp.model.MsnaUser;
 
 import java.util.ArrayList;
 import java.util.List;
