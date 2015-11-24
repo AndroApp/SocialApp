@@ -9,8 +9,10 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.avos.avospush.notification.NotificationCompat;
+import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.R;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -22,7 +24,7 @@ import java.util.Random;
 public class NotificationUtils {
 
     private static List<String> notificationTagList = new LinkedList<>();
-
+    private static HashMap<String, Integer> notificationIdList = new HashMap<>();
     public static void addTag(String tag) {
         if (!notificationTagList.contains(tag)) {
             notificationTagList.add(tag);
@@ -44,7 +46,15 @@ public class NotificationUtils {
 
     public static void showNotification(Context context, String title, String content, String sound, Intent intent) {
         intent.setFlags(0);
-        int notificationId = (new Random()).nextInt();
+        String conversationId = intent.getStringExtra(Constants.CONVERSATION_ID);
+        int notificationId;
+        if (notificationIdList.containsKey(conversationId)) {
+            notificationId = notificationIdList.get(conversationId);
+        } else {
+            notificationId = (new Random()).nextInt();
+            notificationIdList.put(conversationId, notificationId);
+        }
+
         PendingIntent contentIntent = PendingIntent.getBroadcast(context, notificationId, intent, 0);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
