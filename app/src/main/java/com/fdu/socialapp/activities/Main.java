@@ -90,7 +90,6 @@ public class Main extends BaseActivity {
         AVUser user = AVUser.getCurrentUser();
         if (user != null) {
             user.put(Constants.INSTALLATION, null);
-            user.put("num", 0);
             user.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(AVException e) {

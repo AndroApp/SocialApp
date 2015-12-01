@@ -65,4 +65,12 @@ public class PathUtils {
 //    LogUtils.d("picture path ", path);
         return path;
     }
+
+    public static String getAvatarCropPath() {
+        return new File(getAvailableCacheDir(), "avatar_crop").getAbsolutePath();
+    }
+
+    public static String getAvatarTmpPath() {
+        return new File(getAvailableCacheDir(), "avatar_tmp").getAbsolutePath();
+    }
 }
