@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class MsnaUser extends AVUser{
     public static final String TAG = "MsnaUser";
     public static final String AVATAR = "avatar";
+    public static final String USERNAME = "username";
 
     public static MsnaUser getCurrentUser() {
         return getCurrentUser(MsnaUser.class);
