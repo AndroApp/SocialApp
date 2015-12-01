@@ -17,4 +17,6 @@ public class Constants {
 
     public static final String INSTALLATION = "installation";
     public static final String MY_ACTION = "com.fdu.socialapp.MY_ACTION";
+
+    public static final int PAGE_SIZE = 10;
 }

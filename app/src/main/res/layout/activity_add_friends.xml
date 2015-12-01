@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fdu.socialapp.activities.AddFriends">
+
+    <include layout="@layout/toolbar_add_friends"></include>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/searchNameEdit"
+            android:layout_width="0dp"
+            android:layout_height="39dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1.0"
+            android:hint="@string/chat_common_username"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:textSize="18sp"
+            android:textColorHint="@color/gray"/>
+
+        <Button
+            android:id="@+id/searchBtn"
+            android:layout_width="60dp"
+            android:layout_height="39dp"
+            android:layout_margin="10dp"
+            android:text="@string/chat_search"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/add_friends_search_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+</LinearLayout>

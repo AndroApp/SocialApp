@@ -42,6 +42,11 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activities.AddFriends"
+            android:label="AddFriends">
+
+        </activity>
+
         <service android:name="com.avos.avoscloud.PushService"
             android:exported="true" />
 

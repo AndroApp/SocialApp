@@ -83,6 +83,12 @@ public class Main extends BaseActivity {
             return true;
         }
 
+        if (id == R.id.addFriends){
+            Intent intent = new Intent();
+            intent.setClass(this,AddFriends.class);
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
