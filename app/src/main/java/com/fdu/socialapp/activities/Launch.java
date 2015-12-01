@@ -35,7 +35,7 @@ public class Launch extends BaseActivity {
         AVInstallation installation = AVInstallation.getCurrentInstallation();
         if (installation != null) {
             user.put(Constants.INSTALLATION, installation);
-            user.put("num", 1);
+            //user.put("num", 1);
             user.saveInBackground(new SaveCallback() {
                 public void done(AVException e) {
                     if (filterException(e)) {

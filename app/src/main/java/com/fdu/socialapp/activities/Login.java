@@ -65,12 +65,7 @@ public class Login extends BaseActivity {
         MsnaUser.logInInBackground(username, pwd, new LogInCallback<MsnaUser>() {
             public void done(MsnaUser user, AVException e) {
                 if (user != null) {
-                    if (user.getInt("num") == 0) {
-                        // 登录成功
-                        updateUserInfo(user);
-                    } else {
-                        toast("该账号已在其他设备登录");
-                    }
+                    updateUserInfo(user);
                 } else {
                     // 登录失败
                     toast("登录失败");
@@ -84,26 +79,22 @@ public class Login extends BaseActivity {
         AVInstallation installation = AVInstallation.getCurrentInstallation();
         if (installation != null) {
             user.put(Constants.INSTALLATION, installation);
-            user.put("num", 1);
-            user.saveInBackground(new SaveCallback() {
-                public void done(AVException e) {
+            //user.put("num", 1);
+            user.saveInBackground();
+            ChatManager.getInstance().setupManagerWithUserId(user.getObjectId());
+            //根据用户名生成一个Client
+            ChatManager.getInstance().open(new AVIMClientCallback() {
+                @Override
+                public void done(AVIMClient avimClient, AVIMException e) {
                     if (filterException(e)) {
-                        ChatManager.getInstance().setupManagerWithUserId(user.getObjectId());
-                        //根据用户名生成一个Client
-                        ChatManager.getInstance().open(new AVIMClientCallback() {
-                            @Override
-                            public void done(AVIMClient avimClient, AVIMException e) {
-                                if (filterException(e)) {
-                                    toast("登录成功");
-                                    Main.goMainActivityFromActivity(Login.this);
-                                    finish();
-                                }
-                            }
-                        });
-
+                        toast("登录成功");
+                        Main.goMainActivityFromActivity(Login.this);
+                        finish();
                     }
                 }
             });
+        } else {
+            toast("安装未成功");
         }
 
     }

@@ -117,24 +117,7 @@ public class ConversationFragment extends BaseFragment implements ChatManager.Co
         startActivity(intent);
     }
 
-/*
-    private void updateConversationList() {
-        conversationManager.findRecentConversations(new Room.MultiConversationsCallback() {
-            @Override
-            public void done(List<Room> conversationList, AVException exception) {
-                swipeRefreshLayout.setRefreshing(false);
-                if (filterException(exception)) {
 
-                    updateLastMessage(conversationList);
-
-                    List<Room> sortedConversations = sortConversations(conversationList);
-                    itemAdapter.setDataList(sortedConversations);
-                    itemAdapter.notifyDataSetChanged();
-                }
-            }
-        });
-    }
-*/
 
     private void updateConversationList() {
         conversationManager.findAndCacheRooms(new Room.MultiRoomsCallback() {
