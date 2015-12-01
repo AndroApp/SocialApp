@@ -11,6 +11,7 @@ import com.fdu.socialapp.R;
 import com.fdu.socialapp.custom.ConversationFragment;
 import com.fdu.socialapp.custom.NavFragment;
 import com.fdu.socialapp.custom.PagerSlidingTabStrip;
+import com.fdu.socialapp.utils.NotificationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,11 @@ public class MyPagerAdapter extends FragmentPagerAdapter implements ViewPager.On
     @Override
     public void onPageSelected(int position) {
         Log.i(TAG, "Page " + position + " selected");
+        if (position == 0) {
+            NotificationUtils.setNeverShow(true);
+        } else {
+            NotificationUtils.setNeverShow(false);
+        }
     }
 
     @Override

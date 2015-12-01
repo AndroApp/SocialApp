@@ -56,5 +56,6 @@
     <string name="chat_cancelRecord">取消录音</string>
     <string name="chat_audio">语音</string>
     <string name="chat_position">位置</string>
+    <string name="message_when_agree_request">我们已经是好友了，来聊天吧</string>
 
 </resources>

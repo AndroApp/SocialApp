@@ -22,9 +22,14 @@ import java.util.Random;
  * 用来确定一个特定的conversation是否应该展示通知
  */
 public class NotificationUtils {
-
+    private static boolean neverShow = false;
     private static List<String> notificationTagList = new LinkedList<>();
     private static HashMap<String, Integer> notificationIdList = new HashMap<>();
+
+    public static void setNeverShow(boolean b) {
+        neverShow = b;
+    }
+
     public static void addTag(String tag) {
         if (!notificationTagList.contains(tag)) {
             notificationTagList.add(tag);
@@ -41,7 +46,12 @@ public class NotificationUtils {
      * @param tag conversationId
      */
     public static boolean isShowNotification(String tag) {
-        return !notificationTagList.contains(tag);
+        if (neverShow) {
+            return false;
+        } else {
+            return !notificationTagList.contains(tag);
+        }
+
     }
 
     public static void showNotification(Context context, String title, String content, String sound, Intent intent) {

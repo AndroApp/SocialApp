@@ -1,6 +1,5 @@
 package com.fdu.socialapp.viewholder;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -8,11 +7,14 @@ import android.widget.TextView;
 
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
+import com.fdu.socialapp.controller.ConversationHelper;
 import com.fdu.socialapp.R;
+import com.fdu.socialapp.controller.MessageHelper;
+import com.fdu.socialapp.service.ConversationManager;
 import com.fdu.socialapp.event.ConversationItemClickEvent;
 import com.fdu.socialapp.model.ConversationType;
-import com.fdu.socialapp.model.MyConversation;
+import com.fdu.socialapp.model.Room;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,28 +49,28 @@ public class ConversationItemHolder extends AVCommonViewHolder {
 
     @Override
     public void bindData(Object o) {
-        final MyConversation myConversation = (MyConversation) o;
-        AVIMConversation avimConversation = myConversation.getConversation();
-        if (MyConversation.isValidConversation(avimConversation)) {
-            if (MyConversation.getType(avimConversation) == ConversationType.Single) {
-                avatarView.setImageBitmap(MyConversation.getConversationIcon(avimConversation));
+        final Room room = (Room) o;
+        AVIMConversation avimConversation = room.getConversation();
+        if (ConversationHelper.isValidConversation(avimConversation)) {
+            if (ConversationHelper.typeOfConversation(avimConversation) == ConversationType.Single) {
+                avatarView.setImageBitmap(ConversationManager.getConversationIcon(avimConversation));
             } else {
-                avatarView.setImageBitmap(MyConversation.getConversationIcon(avimConversation));
+                avatarView.setImageBitmap(ConversationManager.getConversationIcon(avimConversation));
             }
 
-            nameView.setText(MyConversation.nameOfConversation(avimConversation));
+            nameView.setText(ConversationHelper.nameOfConversation(avimConversation));
 
-            if (myConversation.getUnreadCount() > 0) {
+            if (room.getUnreadCount() > 0) {
                 unreadView.setVisibility(View.VISIBLE);
             } else {
                 unreadView.setVisibility(View.GONE);
             }
 
-            AVIMMessage lastMessage = myConversation.getLastMessage();
+            AVIMMessage lastMessage = room.getLastMessage();
             if (lastMessage != null) {
                 SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA);
                 timeView.setText(format.format(new Date(lastMessage.getTimestamp())));
-                msgView.setText(((AVIMTextMessage)lastMessage).getText());
+                msgView.setText(MessageHelper.outlineOfMsg((AVIMTypedMessage) room.getLastMessage()));;
             }
         }
 
@@ -76,7 +78,7 @@ public class ConversationItemHolder extends AVCommonViewHolder {
             @Override
             public void onClick(View v) {
                 ConversationItemClickEvent itemClickEvent =  new ConversationItemClickEvent();
-                itemClickEvent.conversationId = myConversation.getConversationId();
+                itemClickEvent.conversationId = room.getConversationId();
                 EventBus.getDefault().post(itemClickEvent);
             }
         });

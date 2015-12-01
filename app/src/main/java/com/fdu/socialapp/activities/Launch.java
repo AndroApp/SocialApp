@@ -11,8 +11,8 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.R;
+import com.fdu.socialapp.model.ChatManager;
 import com.fdu.socialapp.model.MsnaUser;
-import com.fdu.socialapp.model.MyClientManager;
 
 
 public class Launch extends BaseActivity {
@@ -40,7 +40,7 @@ public class Launch extends BaseActivity {
                 public void done(AVException e) {
                     if (filterException(e)) {
                         //根据用户名生成一个Client
-                        MyClientManager.getInstance().open(user.getUsername(), new AVIMClientCallback() {
+                        ChatManager.getInstance().open(new AVIMClientCallback() {
                             @Override
                             public void done(AVIMClient avimClient, AVIMException e) {
                                 if (filterException(e)) {

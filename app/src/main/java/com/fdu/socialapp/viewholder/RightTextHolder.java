@@ -12,6 +12,7 @@ import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.event.ImTypeMessageResendEvent;
+import com.fdu.socialapp.model.MsnaUser;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -70,7 +71,7 @@ public class RightTextHolder extends AVCommonViewHolder {
 
         contentView.setText(content);
         timeView.setText(time);
-        nameView.setText(message.getFrom());
+        nameView.setText(MsnaUser.getCurrentUser().getUsername());
 
         if (AVIMMessage.AVIMMessageStatus.AVIMMessageStatusFailed == message.getMessageStatus()) {
             errorView.setVisibility(View.VISIBLE);

@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.fdu.socialapp.viewholder.LeftTextHolder;
-import com.fdu.socialapp.model.MyClientManager;
+import com.fdu.socialapp.model.ChatManager;
 import com.fdu.socialapp.viewholder.RightTextHolder;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemViewType(int position) {
         AVIMMessage message = messageList.get(position);
-        if (message.getFrom().equals(MyClientManager.getInstance().getClientId())) {
+        if (message.getFrom().equals(ChatManager.getInstance().getSelfId())) {
             return ITEM_RIGHT_TEXT;
         } else {
             return ITEM_LEFT_TEXT;

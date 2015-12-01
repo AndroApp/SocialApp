@@ -6,6 +6,11 @@ package com.fdu.socialapp;
  */
 public class Constants {
     public static final String OBJECT_ID = "objectId";
+    public static final String UPDATED_AT = "updatedAt";
+    public static final String NOTOFICATION_TAG = "notification_tag";
+    public static final String NOTIFICATION_SINGLE_CHAT = "notification_single_chat";
+    public static final String NOTIFICATION_GROUP_CHAT = "notification_group_chat";
+    public static final String MEMBER_NAME = "member_name";
     public static String CONVERSATION_ID = "conversation_id";
 
     public static String MEMBER_ID = "member_id";

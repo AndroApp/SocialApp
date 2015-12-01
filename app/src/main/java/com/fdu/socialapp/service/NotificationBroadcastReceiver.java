@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.activities.Login;
 import com.fdu.socialapp.activities.SingleChat;
-import com.fdu.socialapp.model.MyClientManager;
+import com.fdu.socialapp.model.ChatManager;
 
 /**
  * Created by mao on 2015/11/14 0014.
@@ -17,13 +17,18 @@ import com.fdu.socialapp.model.MyClientManager;
 public class NotificationBroadcastReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (MyClientManager.getInstance().getClientId() == null) {
+        if (ChatManager.getInstance().getSelfId() == null) {
             Intent startActivityIntent = new Intent(context, Login.class);
             startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(startActivityIntent);
         } else {
-            String conversationId = intent.getStringExtra(Constants.CONVERSATION_ID);
-            if (!TextUtils.isEmpty(conversationId)) {
+
+            String tag = intent.getStringExtra(Constants.NOTOFICATION_TAG);
+            if (Constants.NOTIFICATION_GROUP_CHAT.equals(tag)) {
+                gotoSingleChatActivity(context, intent);
+            } else if (Constants.NOTIFICATION_SINGLE_CHAT.equals(tag)) {
+                gotoSingleChatActivity(context, intent);
+            } else {
                 gotoSingleChatActivity(context, intent);
             }
         }

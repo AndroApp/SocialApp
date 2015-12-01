@@ -2,85 +2,48 @@ package com.fdu.socialapp.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-import com.fdu.socialapp.model.Friend;
-import com.fdu.socialapp.model.Group;
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
-
-import java.sql.SQLException;
+import com.fdu.socialapp.model.RoomsTable;
 
 /**
  * Created by mh on 2015/10/14.
  */
-public class DBHelper extends OrmLiteSqliteOpenHelper{
+public class DBHelper extends SQLiteOpenHelper {
 
-    private Dao<Friend,Integer> mFriendDao;
-    private Dao<Group,Integer> mGroupDao;
+    private static final int DB_VER = 6;
+    private String userId;
 
-    private static final String DB_NAME = "orm";
-    private static final int DB_VERSION = 1;
-    private static DBHelper instance = null;
-
-    private DBHelper(Context context){
-        super(context,DB_NAME,null,DB_VERSION);
+    private DBHelper(Context context, String name, int version) {
+        super(context, name, null, version);
     }
 
-    public static DBHelper getInstance(Context context){
-        if (instance == null){
-            synchronized (DBHelper.class){
-                if (instance == null){
-                    instance = new DBHelper(context);
-                }
-            }
-        }
-        return instance;
+    public DBHelper(Context context, String userId) {
+        this(context, "chat_" + userId + ".db3", DB_VER);
+        this.userId = userId;
     }
 
     @Override
-    public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
-        try{
-            TableUtils.createTableIfNotExists(connectionSource,Friend.class);
-            TableUtils.createTableIfNotExists(connectionSource,Group.class);
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
+    public void onCreate(SQLiteDatabase db) {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-
-    }
-
-    public void clear(){
-        try{
-            TableUtils.clearTable(connectionSource,Friend.class);
-            TableUtils.clearTable(connectionSource,Group.class);
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-
-    public Dao<Friend,Integer> getmFriendDao() throws SQLException{
-        if (mFriendDao == null){
-            mFriendDao = getDao(Friend.class);
-        }
-        return mFriendDao;
-    }
-
-    public Dao<Group,Integer> getmGroupDao() throws SQLException{
-        if (mGroupDao == null){
-            mGroupDao = getDao(Group.class);
-        }
-        return mGroupDao;
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        Log.d("chat db path", db.getPath());
+        RoomsTable.createTableAndIndex(db);
     }
 
     @Override
-    public void close() {
-        super.close();
-        mFriendDao = null;
-        mGroupDao = null;
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        switch (newVersion) {
+            case 6:
+                RoomsTable.dropTable(db);
+                RoomsTable.createTableAndIndex(db);
+            case 2:
+            case 1:
+                break;
+        }
     }
 }

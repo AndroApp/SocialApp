@@ -10,9 +10,9 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.R;
+import com.fdu.socialapp.controller.ConversationHelper;
 import com.fdu.socialapp.custom.ChatFragment;
-import com.fdu.socialapp.model.MyClientManager;
-import com.fdu.socialapp.model.MyConversation;
+import com.fdu.socialapp.model.ChatManager;
 import com.fdu.socialapp.utils.ConversationCacheUtils;
 
 import butterknife.Bind;
@@ -44,10 +44,11 @@ public class SingleChat extends BaseActivity {
         if (conversationId != null) {
             AVIMConversation con = ConversationCacheUtils.getCacheConversation(conversationId);
             chatFragment.setConversation(con);
-            toolbar.setTitle(MyConversation.otherIdOfConversation(con));
+            toolbar.setTitle(ConversationHelper.nameOfConversation(con));
         } else {
             String memberId = getIntent().getStringExtra(Constants.MEMBER_ID);
-            toolbar.setTitle(memberId);
+            String memberName = getIntent().getStringExtra(Constants.MEMBER_NAME);
+            toolbar.setTitle(memberName);
             getConversation(memberId);
         }
 
@@ -59,17 +60,24 @@ public class SingleChat extends BaseActivity {
         Bundle extras = intent.getExtras();
         if (null != extras && extras.containsKey(Constants.MEMBER_ID)) {
             String memberId = extras.getString(Constants.MEMBER_ID);
-            toolbar.setTitle(memberId);
+            String memberName = getIntent().getStringExtra(Constants.MEMBER_NAME);
+            toolbar.setTitle(memberName);
             getConversation(memberId);
+        } else if (null != extras && extras.containsKey(Constants.CONVERSATION_ID)){
+            String conversationId = getIntent().getStringExtra(Constants.CONVERSATION_ID);
+            AVIMConversation con = ConversationCacheUtils.getCacheConversation(conversationId);
+            chatFragment.setConversation(con);
+            toolbar.setTitle(ConversationHelper.nameOfConversation(con));
         }
     }
 
     private void getConversation(final String memberId) {
-        MyClientManager.getInstance().fetchConversationWithUserId(memberId, new AVIMConversationCreatedCallback() {
+        ChatManager.getInstance().fetchConversationWithUserId(memberId, new AVIMConversationCreatedCallback() {
             @Override
             public void done(AVIMConversation avimConversation, AVIMException e) {
                 if (filterException(e)) {
                     chatFragment.setConversation(avimConversation);
+                    ChatManager.getInstance().getRoomsTable().insertRoom(avimConversation.getConversationId());
                 }
             }
         });

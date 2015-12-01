@@ -19,9 +19,15 @@ import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.activities.SingleChat;
 import com.fdu.socialapp.adapter.ConversationListAdapter;
+import com.fdu.socialapp.controller.ConversationHelper;
 import com.fdu.socialapp.event.ConversationItemClickEvent;
 import com.fdu.socialapp.event.ImTypeMessageEvent;
-import com.fdu.socialapp.model.MyConversation;
+import com.fdu.socialapp.model.ChatManager;
+import com.fdu.socialapp.model.ConversationType;
+import com.fdu.socialapp.model.Room;
+import com.fdu.socialapp.service.ConversationManager;
+import com.fdu.socialapp.utils.AVUserCacheUtils;
+import com.fdu.socialapp.utils.NotificationUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,8 +39,8 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by mao on 2015/11/20 0020.
  */
-public class ConversationFragment extends BaseFragment {
-    protected ConversationListAdapter<MyConversation> itemAdapter;
+public class ConversationFragment extends BaseFragment implements ChatManager.ConnectionListener{
+    protected ConversationListAdapter<Room> itemAdapter;
     protected RecyclerView recyclerView;
     protected LinearLayoutManager linearLayoutManager;
     protected SwipeRefreshLayout swipeRefreshLayout;
@@ -63,13 +69,13 @@ public class ConversationFragment extends BaseFragment {
         updateConversationList();
     }
 
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 updateConversationList();
-
             }
         });
     }
@@ -88,7 +94,16 @@ public class ConversationFragment extends BaseFragment {
         super.onResume();
         if (!hidden) {
             updateConversationList();
+            NotificationUtils.setNeverShow(true);
+        } else {
+            NotificationUtils.setNeverShow(false);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        NotificationUtils.setNeverShow(false);
     }
 
     public void onEvent(ImTypeMessageEvent event) {
@@ -96,38 +111,58 @@ public class ConversationFragment extends BaseFragment {
     }
 
     public void onEvent(ConversationItemClickEvent event) {
+        ChatManager.getInstance().getRoomsTable().clearUnread(event.conversationId);
         Intent intent = new Intent(getActivity(), SingleChat.class);
         intent.putExtra(Constants.CONVERSATION_ID, event.conversationId);
         startActivity(intent);
     }
 
+/*
     private void updateConversationList() {
-        conversationManager.findRecentConversations(new MyConversation.MultiConversationsCallback() {
+        conversationManager.findRecentConversations(new Room.MultiConversationsCallback() {
             @Override
-            public void done(List<MyConversation> conversationList, AVException exception) {
+            public void done(List<Room> conversationList, AVException exception) {
                 swipeRefreshLayout.setRefreshing(false);
                 if (filterException(exception)) {
 
                     updateLastMessage(conversationList);
 
-                    List<MyConversation> sortedConversations = sortConversations(conversationList);
+                    List<Room> sortedConversations = sortConversations(conversationList);
                     itemAdapter.setDataList(sortedConversations);
                     itemAdapter.notifyDataSetChanged();
                 }
             }
         });
     }
+*/
 
-    private void updateLastMessage(final List<MyConversation> conversationList) {
-        for (final MyConversation myConversation : conversationList) {
-            AVIMConversation conversation = myConversation.getConversation();
+    private void updateConversationList() {
+        conversationManager.findAndCacheRooms(new Room.MultiRoomsCallback() {
+            @Override
+            public void done(List<Room> roomList, AVException exception) {
+                swipeRefreshLayout.setRefreshing(false);
+                if (filterException(exception)) {
+                    updateLastMessage(roomList);
+                    cacheRelatedUsers(roomList);
+
+                    List<Room> sortedRooms = sortRooms(roomList);
+                    itemAdapter.setDataList(sortedRooms);
+                    itemAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    private void updateLastMessage(final List<Room> conversationList) {
+        for (final Room room : conversationList) {
+            AVIMConversation conversation = room.getConversation();
             if (null != conversation) {
                 conversation.getLastMessage(new AVIMSingleMessageQueryCallback() {
                     @Override
                     public void done(AVIMMessage avimMessage, AVIMException e) {
                         if (filterException(e) && null != avimMessage) {
-                            myConversation.setLastMessage(avimMessage);
-                            int index = conversationList.indexOf(myConversation);
+                            room.setLastMessage(avimMessage);
+                            int index = conversationList.indexOf(room);
                             itemAdapter.notifyItemChanged(index);
                         }
                     }
@@ -136,13 +171,29 @@ public class ConversationFragment extends BaseFragment {
         }
     }
 
-    private List<MyConversation> sortConversations(final List<MyConversation> roomList) {
-        List<MyConversation> sortedList = new ArrayList<>();
+    private void cacheRelatedUsers(List<Room> rooms) {
+        List<String> needCacheUsers = new ArrayList<String>();
+        for(Room room : rooms) {
+            AVIMConversation conversation = room.getConversation();
+            if (ConversationHelper.typeOfConversation(conversation) == ConversationType.Single) {
+                needCacheUsers.add(ConversationHelper.otherIdOfConversation(conversation));
+            }
+        }
+        AVUserCacheUtils.cacheUsers(needCacheUsers, new AVUserCacheUtils.CacheUserCallback() {
+            @Override
+            public void done(Exception e) {
+                itemAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private List<Room> sortRooms(final List<Room> roomList) {
+        List<Room> sortedList = new ArrayList<>();
         if (null != roomList) {
             sortedList.addAll(roomList);
-            Collections.sort(sortedList, new Comparator<MyConversation>() {
+            Collections.sort(sortedList, new Comparator<Room>() {
                 @Override
-                public int compare(MyConversation lhs, MyConversation rhs) {
+                public int compare(Room lhs, Room rhs) {
                     long value = lhs.getLastModifyTime() - rhs.getLastModifyTime();
                     if (value > 0) {
                         return -1;
@@ -157,4 +208,8 @@ public class ConversationFragment extends BaseFragment {
         return sortedList;
     }
 
+    @Override
+    public void onConnectionChanged(boolean connect) {
+
+    }
 }

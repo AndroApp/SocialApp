@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toolbar;
 
+import com.avos.avoscloud.AVCallback;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVPush;
@@ -19,10 +20,15 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SendCallback;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.adapter.MyPagerAdapter;
 import com.fdu.socialapp.custom.PagerSlidingTabStrip;
+import com.fdu.socialapp.model.ChatManager;
+import com.fdu.socialapp.model.MsnaUser;
 import com.fdu.socialapp.service.PushManager;
 
 
@@ -91,6 +97,10 @@ public class Main extends BaseActivity {
                 public void done(AVException e) {
                     if (filterException(e)) {
                         PushManager.getInstance().unsubscribeCurrentUserChannel();
+                        ChatManager.getInstance().closeWithCallback(new AVIMClientCallback() {
+                            @Override
+                            public void done(AVIMClient avimClient, AVIMException e) {}
+                        });
                         AVUser.logOut();
                         finish();
                         Intent intent = new Intent(Main.this, Launch.class);
@@ -143,10 +153,28 @@ public class Main extends BaseActivity {
 
     public void send(View view) {
         EditText testUser = (EditText) findViewById(R.id.testMessage);
-        final String userId = testUser.getText().toString().trim();
-        Intent intent = new Intent(Main.this, SingleChat.class);
-        intent.putExtra(Constants.MEMBER_ID, userId);
-        startActivity(intent);
+        final String userName = testUser.getText().toString().trim();
+
+        AVQuery<AVUser> query = MsnaUser.getQuery();
+        query.whereEqualTo("username", userName);
+        query.limit(1);
+
+        query.findInBackground(new FindCallback<AVUser>() {
+            @Override
+            public void done(List<AVUser> list, AVException e) {
+                if (filterException(e)) {
+                    if (list.size() > 0) {
+                        String userId = list.get(0).getObjectId();
+                        Intent intent = new Intent(Main.this, SingleChat.class);
+                        intent.putExtra(Constants.MEMBER_ID, userId);
+                        intent.putExtra(Constants.MEMBER_NAME, userName);
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
+
+
     }
 
 }

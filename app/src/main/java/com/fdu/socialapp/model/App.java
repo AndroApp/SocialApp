@@ -6,11 +6,8 @@ import android.util.Log;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
-import com.avos.avoscloud.im.v2.AVIMMessageManager;
-import com.avos.avoscloud.im.v2.AVIMTypedMessage;
-import com.fdu.socialapp.MessageHandler;
+import com.fdu.socialapp.service.ConversationManager;
 import com.fdu.socialapp.service.PushManager;
 
 
@@ -24,13 +21,21 @@ public class App extends Application{
 
     private final String TAG = "App";
 
+    private void initChatManager() {
+        final ChatManager chatManager = ChatManager.getInstance();
+        chatManager.init(this);
+        if (MsnaUser.getCurrentUser() != null) {
+            chatManager.setupManagerWithUserId(MsnaUser.getCurrentUser().getObjectId());
+        }
+        chatManager.setConversationEventHandler(ConversationManager.getEventHandler());
+    }
+
 
     @Override
     public void onCreate() {
         super.onCreate();
         myApp = this;
         AVOSCloud.initialize(this, "zFeMVYB4tMuBVvjcAWt8uBOh", "IInViyO81sNlBNj4TUSoXyQH");
-        AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(this));
         AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
             public void done(AVException e) {
                 if (e == null) {
@@ -42,6 +47,6 @@ public class App extends Application{
             }
         });
         PushManager.getInstance().init(this);
-
+        initChatManager();
     }
 }

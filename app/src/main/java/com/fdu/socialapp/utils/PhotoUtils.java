@@ -271,4 +271,50 @@ public class PhotoUtils {
         }
         System.gc();
     }
+
+    public static String compressImage(String path, String newPath) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        int inSampleSize = 1;
+        int maxSize = 3000;
+        if (options.outWidth > maxSize || options.outHeight > maxSize) {
+            int widthScale = (int) Math.ceil(options.outWidth * 1.0 / maxSize);
+            int heightScale = (int) Math.ceil(options.outHeight * 1.0 / maxSize);
+            inSampleSize = Math.max(widthScale, heightScale);
+        }
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = inSampleSize;
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+        int newW = w;
+        int newH = h;
+        if (w > maxSize || h > maxSize) {
+            if (w > h) {
+                newW = maxSize;
+                newH = (int) (newW * h * 1.0 / w);
+            } else {
+                newH = maxSize;
+                newW = (int) (newH * w * 1.0 / h);
+            }
+        }
+        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, newW, newH, false);
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(newPath);
+            newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+        } catch (FileNotFoundException e) {
+
+        } finally {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        recycle(newBitmap);
+        recycle(bitmap);
+        return newPath;
+    }
 }

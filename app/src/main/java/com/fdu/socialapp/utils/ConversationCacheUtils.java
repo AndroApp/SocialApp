@@ -6,7 +6,7 @@ import com.avos.avoscloud.im.v2.AVIMConversationQuery;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.fdu.socialapp.Constants;
-import com.fdu.socialapp.model.MyClientManager;
+import com.fdu.socialapp.model.ChatManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class ConversationCacheUtils {
     }
 
     public static void findConversationsByConversationIds(List<String> ids, AVIMConversationQueryCallback callback) {
-        AVIMConversationQuery conversationQuery = MyClientManager.getInstance().getConversationQuery();
+        AVIMConversationQuery conversationQuery = ChatManager.getInstance().getConversationQuery();
         if (ids.size() > 0 && null != conversationQuery) {
             conversationQuery.whereContainsIn(Constants.OBJECT_ID, ids);
             conversationQuery.setLimit(1000);
