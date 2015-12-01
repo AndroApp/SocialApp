@@ -55,5 +55,4 @@ public class AddRequest extends AVObject {
     public void setIsRead(boolean isRead) {
         put(IS_READ, isRead);
     }
-
 }
