@@ -101,7 +101,7 @@ public class AddFriends extends BaseActivity{
         try {
             searchUser(searchName, adapter.getItemCount());
         }catch (Exception e){
-            
+
         }
     }
 
