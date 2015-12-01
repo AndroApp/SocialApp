@@ -38,6 +38,7 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by mao on 2015/11/20 0020.
+ * 聊天列表界面
  */
 public class ConversationFragment extends BaseFragment implements ChatManager.ConnectionListener{
     protected ConversationListAdapter<Room> itemAdapter;
@@ -155,7 +156,7 @@ public class ConversationFragment extends BaseFragment implements ChatManager.Co
     }
 
     private void cacheRelatedUsers(List<Room> rooms) {
-        List<String> needCacheUsers = new ArrayList<String>();
+        List<String> needCacheUsers = new ArrayList<>();
         for(Room room : rooms) {
             AVIMConversation conversation = room.getConversation();
             if (ConversationHelper.typeOfConversation(conversation) == ConversationType.Single) {

@@ -14,6 +14,7 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by mao on 2015/11/14 0014.
+ * Fragment的基类
  */
 public class BaseFragment extends Fragment {
     protected Context ctx;

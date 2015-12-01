@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * Created by mao on 2015/11/17 0017.
+ *
  */
 public class ConversationCacheUtils {
     private static Map<String, AVIMConversation> conversationMap;
@@ -39,7 +40,7 @@ public class ConversationCacheUtils {
     }
 
     public static void cacheConversations(List<String> ids, final CacheConversationCallback callback) {
-        List<String> uncachedIds = new ArrayList<String>();
+        List<String> uncachedIds = new ArrayList<>();
         for (String id : ids) {
             if (!conversationMap.containsKey(id)) {
                 uncachedIds.add(id);
@@ -61,7 +62,9 @@ public class ConversationCacheUtils {
                         conversationMap.put(conversation.getConversationId(), conversation);
                     }
                 }
-                callback.done(e);
+                if (callback != null) {
+                    callback.done(e);
+                }
             }
         });
     }

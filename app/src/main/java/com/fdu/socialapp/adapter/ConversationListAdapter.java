@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Created by mao on 2015/11/20 0020.
+ *
  */
 public class ConversationListAdapter<T> extends RecyclerView.Adapter<ConversationItemHolder> {
 

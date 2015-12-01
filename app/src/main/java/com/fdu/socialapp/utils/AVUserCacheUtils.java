@@ -33,7 +33,7 @@ public class AVUserCacheUtils {
     }
 
     public static void cacheUsers(List<String> ids, final CacheUserCallback cacheUserCallback) {
-        Set<String> uncachedIds = new HashSet<String>();
+        Set<String> uncachedIds = new HashSet<>();
         for (String id : ids) {
             if (!userMap.containsKey(id)) {
                 uncachedIds.add(id);
@@ -67,7 +67,7 @@ public class AVUserCacheUtils {
     }
 
     public static List<MsnaUser> getUsersFromCache(List<String> ids) {
-        List<MsnaUser> userList = new ArrayList<MsnaUser>();
+        List<MsnaUser> userList = new ArrayList<>();
         for (String id : ids) {
             if (userMap.containsKey(id)) {
                 userList.add(userMap.get(id));

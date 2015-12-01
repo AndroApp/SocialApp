@@ -59,7 +59,7 @@ public class ConversationHelper {
     /**
      * 获取单聊对话的另外一个人的 userId
      *
-     * @param conversation
+     * @param conversation The desired conversation
      * @return 如果非法对话，则为 selfId
      */
     public static String otherIdOfConversation(AVIMConversation conversation) {

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toolbar;
 
-import com.avos.avoscloud.AVCallback;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVPush;
@@ -31,11 +30,11 @@ import com.fdu.socialapp.model.ChatManager;
 import com.fdu.socialapp.model.MsnaUser;
 import com.fdu.socialapp.service.PushManager;
 
-
 import java.util.List;
 
 public class Main extends BaseActivity {
     private static final String TAG = "Main";
+
     public static void goMainActivityFromActivity(Activity fromActivity) {
         Intent intent = new Intent(fromActivity, Main.class);
         fromActivity.startActivity(intent);
@@ -99,7 +98,8 @@ public class Main extends BaseActivity {
                         PushManager.getInstance().unsubscribeCurrentUserChannel();
                         ChatManager.getInstance().closeWithCallback(new AVIMClientCallback() {
                             @Override
-                            public void done(AVIMClient avimClient, AVIMException e) {}
+                            public void done(AVIMClient avimClient, AVIMException e) {
+                            }
                         });
                         AVUser.logOut();
                         finish();
@@ -124,32 +124,6 @@ public class Main extends BaseActivity {
 
     }
 
-    public void test(View view) {
-        Log.i(TAG, "test");
-        EditText testUser = (EditText) findViewById(R.id.testMessage);
-        String username = testUser.getText().toString();
-        AVQuery<AVUser> query = AVUser.getQuery();
-        query.whereEqualTo("username", username);
-        query.findInBackground(new FindCallback<AVUser>() {
-            public void done(List<AVUser> objects, AVException e) {
-                if (filterException(e)) {
-                    // 查询成功
-                    for (AVUser user : objects) {
-                        AVQuery pushQuery = AVInstallation.getQuery();
-                        pushQuery.whereEqualTo("installationId", user.getString("installationId"));
-                        AVPush.sendMessageInBackground("message to installation", pushQuery, new SendCallback() {
-                            @Override
-                            public void done(AVException e) {
-                                if (filterException(e)) {
-                                    toast("push success!");
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        });
-    }
 
     public void send(View view) {
         EditText testUser = (EditText) findViewById(R.id.testMessage);

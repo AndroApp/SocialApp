@@ -95,8 +95,6 @@ public class ChatManager extends AVIMClientEventHandler {
 
     /**
      * 是否连上聊天服务
-     *
-     * @return
      */
     public boolean isConnect() {
         return connect;
