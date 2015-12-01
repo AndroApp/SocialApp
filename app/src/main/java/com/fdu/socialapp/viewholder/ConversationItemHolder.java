@@ -11,10 +11,14 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.fdu.socialapp.controller.ConversationHelper;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.controller.MessageHelper;
+import com.fdu.socialapp.model.MsnaUser;
 import com.fdu.socialapp.service.ConversationManager;
 import com.fdu.socialapp.event.ConversationItemClickEvent;
 import com.fdu.socialapp.model.ConversationType;
 import com.fdu.socialapp.model.Room;
+import com.fdu.socialapp.utils.AVUserCacheUtils;
+import com.fdu.socialapp.utils.PhotoUtils;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,11 +57,13 @@ public class ConversationItemHolder extends AVCommonViewHolder {
         AVIMConversation avimConversation = room.getConversation();
         if (ConversationHelper.isValidConversation(avimConversation)) {
             if (ConversationHelper.typeOfConversation(avimConversation) == ConversationType.Single) {
-                avatarView.setImageBitmap(ConversationManager.getConversationIcon(avimConversation));
+                MsnaUser user = (MsnaUser) AVUserCacheUtils.getCachedUser(ConversationHelper.otherIdOfConversation(avimConversation));
+                if (user != null) {
+                    ImageLoader.getInstance().displayImage(user.getAvatarUrl(), avatarView, PhotoUtils.avatarImageOptions);
+                }
             } else {
                 avatarView.setImageBitmap(ConversationManager.getConversationIcon(avimConversation));
             }
-
             nameView.setText(ConversationHelper.nameOfConversation(avimConversation));
 
             if (room.getUnreadCount() > 0) {

@@ -12,6 +12,10 @@ import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
 
+import com.fdu.socialapp.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -21,6 +25,20 @@ import java.io.IOException;
  * Created by mao on 2015/11/20 0020.
  */
 public class PhotoUtils {
+
+    public static DisplayImageOptions avatarImageOptions = new DisplayImageOptions.Builder()
+            .showImageOnLoading(R.mipmap.ic_launcher)
+            .showImageForEmptyUri(R.mipmap.ic_launcher)
+            .showImageOnFail(R.mipmap.ic_launcher)
+            .cacheInMemory(true)
+            .cacheOnDisc(true)
+            .considerExifParams(true)
+            .imageScaleType(ImageScaleType.EXACTLY)
+            .bitmapConfig(Bitmap.Config.RGB_565)
+            .resetViewBeforeLoading(true)// 设置图片在下载前是否重置，复位
+                    //.displayer(new RoundedBitmapDisplayer(20))
+                    //.displayer(new FadeInBitmapDisplayer(100))// 淡入
+            .build();
     /**
      * 获取指定路径下的图片的指定大小的缩略图 getImageThumbnail
      *

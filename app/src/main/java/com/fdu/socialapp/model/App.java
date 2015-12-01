@@ -1,6 +1,7 @@
 package com.fdu.socialapp.model;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import com.avos.avoscloud.AVException;
@@ -9,6 +10,9 @@ import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.SaveCallback;
 import com.fdu.socialapp.service.ConversationManager;
 import com.fdu.socialapp.service.PushManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 
 /**
@@ -30,6 +34,19 @@ public class App extends Application{
         chatManager.setConversationEventHandler(ConversationManager.getEventHandler());
     }
 
+    /**
+     * 初始化ImageLoader
+     */
+    public static void initImageLoader(Context context) {
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                context)
+                .threadPoolSize(3).threadPriority(Thread.NORM_PRIORITY - 2)
+                        //.memoryCache(new WeakMemoryCache())
+                .denyCacheImageMultipleSizesInMemory()
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .build();
+        ImageLoader.getInstance().init(config);
+    }
 
     @Override
     public void onCreate() {
@@ -48,5 +65,6 @@ public class App extends Application{
         });
         PushManager.getInstance().init(this);
         initChatManager();
+        initImageLoader(myApp);
     }
 }
