@@ -7,7 +7,9 @@ import android.util.Log;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.SaveCallback;
+import com.fdu.socialapp.avobject.AddRequest;
 import com.fdu.socialapp.service.ConversationManager;
 import com.fdu.socialapp.service.PushManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -52,6 +54,7 @@ public class App extends Application{
     public void onCreate() {
         super.onCreate();
         myApp = this;
+        AVObject.registerSubclass(AddRequest.class);
         AVOSCloud.initialize(this, "zFeMVYB4tMuBVvjcAWt8uBOh", "IInViyO81sNlBNj4TUSoXyQH");
         AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
             public void done(AVException e) {
