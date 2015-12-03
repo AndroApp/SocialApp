@@ -34,6 +34,7 @@ import java.util.List;
 
 public class Main extends BaseActivity {
     private static final String TAG = "Main";
+    private final static int SCANNIN_GREQUEST_CODE = 1;
 
     public static void goMainActivityFromActivity(Activity fromActivity) {
         Intent intent = new Intent(fromActivity, Main.class);
@@ -89,7 +90,26 @@ public class Main extends BaseActivity {
             startActivity(intent);
         }
 
+        if (id == R.id.scanQRcode) {
+            Intent intent = new Intent();
+            intent.setClass(Main.this, CodeCapture.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case SCANNIN_GREQUEST_CODE:
+                if(resultCode == RESULT_OK){
+                    Bundle bundle = data.getExtras();
+                    toast(bundle.getString("result"));
+                }
+                break;
+        }
     }
 
     public void logout() {

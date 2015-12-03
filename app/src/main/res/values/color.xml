@@ -26,4 +26,8 @@
     <color name="myAccent">#18FFFF</color>
     <color name="myDivider">#B6B6B6</color>
 
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
+
 </resources>
