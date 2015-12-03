@@ -57,7 +57,7 @@ public class ConversationItemHolder extends AVCommonViewHolder {
         AVIMConversation avimConversation = room.getConversation();
         if (ConversationHelper.isValidConversation(avimConversation)) {
             if (ConversationHelper.typeOfConversation(avimConversation) == ConversationType.Single) {
-                MsnaUser user = (MsnaUser) AVUserCacheUtils.getCachedUser(ConversationHelper.otherIdOfConversation(avimConversation));
+                MsnaUser user =  AVUserCacheUtils.getCachedUser(ConversationHelper.otherIdOfConversation(avimConversation));
                 if (user != null) {
                     ImageLoader.getInstance().displayImage(user.getAvatarUrl(), avatarView, PhotoUtils.avatarImageOptions);
                 }

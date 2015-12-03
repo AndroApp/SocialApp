@@ -93,7 +93,7 @@ public class Main extends BaseActivity {
     }
 
     public void logout() {
-        AVUser user = AVUser.getCurrentUser();
+        MsnaUser user = MsnaUser.getCurrentUser();
         if (user != null) {
             user.put(Constants.INSTALLATION, null);
             user.saveInBackground(new SaveCallback() {
@@ -104,12 +104,12 @@ public class Main extends BaseActivity {
                         ChatManager.getInstance().closeWithCallback(new AVIMClientCallback() {
                             @Override
                             public void done(AVIMClient avimClient, AVIMException e) {
+                                AVUser.logOut();
+                                finish();
+                                Intent intent = new Intent(Main.this, Launch.class);
+                                startActivity(intent);
                             }
                         });
-                        AVUser.logOut();
-                        finish();
-                        Intent intent = new Intent(Main.this, Launch.class);
-                        startActivity(intent);
                     }
                 }
             });

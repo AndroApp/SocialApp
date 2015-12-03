@@ -99,7 +99,7 @@ public class NavFragment extends BaseFragment {
     }
 
     private void getAvatar(ImageView avatar) {
-        MsnaUser user = MsnaUser.getCurrentUser();
+        MsnaUser user = MsnaUser.getCachedCurrentUser();
         ImageLoader.getInstance().displayImage(user.getAvatarUrl(), avatar, PhotoUtils.avatarImageOptions);
     }
 
@@ -116,7 +116,7 @@ public class NavFragment extends BaseFragment {
 
 
     private void getNickname(TextView nickname) {
-        String nicknameStr = MsnaUser.getNickname();
+        String nicknameStr = MsnaUser.getCachedCurrentUser().getNickname();
         if (nicknameStr != null) {
             nickname.setText(nicknameStr);
         } else {

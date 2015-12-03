@@ -163,6 +163,7 @@ public class ConversationFragment extends BaseFragment implements ChatManager.Co
                 needCacheUsers.add(ConversationHelper.otherIdOfConversation(conversation));
             }
         }
+        needCacheUsers.add(ChatManager.getInstance().getSelfId());
         AVUserCacheUtils.cacheUsers(needCacheUsers, new AVUserCacheUtils.CacheUserCallback() {
             @Override
             public void done(Exception e) {
