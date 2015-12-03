@@ -112,7 +112,7 @@ public class ConversationFragment extends BaseFragment implements ChatManager.Co
     }
 
     public void onEvent(ConversationItemClickEvent event) {
-        ChatManager.getInstance().getRoomsTable().clearUnread(event.conversationId);
+
         Intent intent = new Intent(getActivity(), SingleChat.class);
         intent.putExtra(Constants.CONVERSATION_ID, event.conversationId);
         startActivity(intent);
