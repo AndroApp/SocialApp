@@ -86,15 +86,17 @@ public class Main extends BaseActivity {
 
         if (id == R.id.addFriends){
             Intent intent = new Intent();
-            intent.setClass(this,AddFriends.class);
+            intent.setClass(this, AddFriends.class);
             startActivity(intent);
+            return true;
         }
 
         if (id == R.id.scanQRcode) {
             Intent intent = new Intent();
             intent.setClass(Main.this, CodeCapture.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

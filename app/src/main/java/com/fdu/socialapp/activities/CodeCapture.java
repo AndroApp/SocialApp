@@ -124,7 +124,6 @@ public class CodeCapture extends Activity implements Callback, View.OnClickListe
         if(resultCode == RESULT_OK){
             switch(requestCode){
                 case REQUEST_CODE:
-                    //��ȡѡ��ͼƬ��·��
                     Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
                     if (cursor.moveToFirst()) {
                         photo_path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
@@ -132,7 +131,7 @@ public class CodeCapture extends Activity implements Callback, View.OnClickListe
                     cursor.close();
 
                     mProgress = new ProgressDialog(CodeCapture.this);
-                    mProgress.setMessage("����ɨ��...");
+                    mProgress.setMessage("...");
                     mProgress.setCancelable(false);
                     mProgress.show();
 
@@ -247,10 +246,11 @@ public class CodeCapture extends Activity implements Callback, View.OnClickListe
         Intent resultIntent = new Intent();
         Bundle bundle = new Bundle();
         bundle.putString("result", resultString);
-        bundle.putParcelable("bitmap", bitmap);
+        //bundle.putParcelable("bitmap", bitmap);
         resultIntent.putExtras(bundle);
-        this.setResult(RESULT_OK, resultIntent);
-        CodeCapture.this.finish();
+        //finish();
+        setResult(RESULT_OK, resultIntent);
+        finish();
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

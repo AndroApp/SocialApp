@@ -67,6 +67,8 @@
     <string name="message_when_agree_request">我们已经是好友了，来聊天吧</string>
 
     <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="ERcodeScan">二维码扫描</string>
+    <string name="back">返回</string>
 
     <!-- Messages IDs -->
     <item type="id" name="auto_focus"/>
