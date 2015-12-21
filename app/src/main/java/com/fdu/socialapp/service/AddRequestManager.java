@@ -14,6 +14,7 @@ import com.fdu.socialapp.R;
 import com.fdu.socialapp.avobject.AddRequest;
 import com.fdu.socialapp.model.App;
 import com.fdu.socialapp.model.MsnaUser;
+import com.fdu.socialapp.utils.AVUserCacheUtils;
 import com.fdu.socialapp.utils.SimpleNetTask;
 import com.fdu.socialapp.utils.Utils;
 
@@ -142,6 +143,19 @@ public class AddRequestManager {
                 if (saveCallback != null) {
                     saveCallback.done(e);
                 }
+            }
+        });
+        AVUserCacheUtils.getCachedUser(friendId).followInBackground(user.getObjectId(), new FollowCallback() {
+            @Override
+            public void done(AVObject avObject, AVException e) {
+                if (saveCallback != null){
+                    saveCallback.done(e);
+                }
+            }
+
+            @Override
+            protected void internalDone0(Object o, AVException e) {
+
             }
         });
     }
