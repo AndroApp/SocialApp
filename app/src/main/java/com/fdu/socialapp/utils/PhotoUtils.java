@@ -1,5 +1,6 @@
 package com.fdu.socialapp.utils;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -11,6 +12,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 
 import com.fdu.socialapp.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -47,7 +49,7 @@ public class PhotoUtils {
      */
     public static Bitmap getImageThumbnail(String imagePath, int width,
                                            int height) {
-        Bitmap bitmap = null;
+        Bitmap bitmap;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         // 获取这个图片的宽和高，注意此处的bitmap为null
@@ -76,7 +78,7 @@ public class PhotoUtils {
         return bitmap;
     }
 
-    public static void saveBitmap(String filePath,
+    public static Uri saveBitmap(String filePath,
                                   Bitmap bitmap) {
         File file = new File(filePath);
         if (!file.getParentFile().exists()) {
@@ -95,6 +97,8 @@ public class PhotoUtils {
         } finally {
             Utils.closeQuietly(out);
         }
+
+        return Uri.fromFile(file);
     }
 
     public static File getFilePath(String filePath, String fileName) {

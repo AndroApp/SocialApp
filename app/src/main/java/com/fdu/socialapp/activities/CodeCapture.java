@@ -15,6 +15,7 @@ import android.os.Message;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.view.SurfaceHolder.Callback;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.camera.CameraManager;
@@ -40,10 +42,11 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.Hashtable;
 import java.util.Vector;
 
-public class CodeCapture extends Activity implements Callback, View.OnClickListener {
+public class CodeCapture extends BaseActivity implements Callback, View.OnClickListener {
 
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
@@ -73,13 +76,15 @@ public class CodeCapture extends Activity implements Callback, View.OnClickListe
         CameraManager.init(getApplication());
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
 
-        Button mButtonBack = (Button) findViewById(R.id.button_back);
-        mButtonBack.setOnClickListener(this);
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
 
-        ImageButton mImageButton = (ImageButton) findViewById(R.id.button_function);
-        mImageButton.setOnClickListener(this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.include1);
+        setActionBar(toolbar);
+        toolbar.setTitle("二维码");
+        toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_36dp);
+
     }
 
     @Override
@@ -98,25 +103,47 @@ public class CodeCapture extends Activity implements Callback, View.OnClickListe
         }
     }
 
-    private Handler mHandler = new Handler(){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+    private Handler mHandler = new PickPhotoHandler(this);
+
+    public void onPicPhotoHandler(Message msg) {
+        mProgress.dismiss();
+        switch (msg.what) {
+            case PARSE_BARCODE_SUC:
+                onResultHandler((String)msg.obj, scanBitmap);
+                break;
+            case PARSE_BARCODE_FAIL:
+                Toast.makeText(CodeCapture.this, (String) msg.obj, Toast.LENGTH_LONG).show();
+                break;
+
+        }
+    }
+
+    private static class PickPhotoHandler extends Handler {
+        WeakReference<CodeCapture> mActivity;
+
+        PickPhotoHandler(CodeCapture activity) {
+            mActivity = new WeakReference<>(activity);
+        }
         @Override
         public void handleMessage(Message msg) {
+            CodeCapture theActivity = mActivity.get();
             super.handleMessage(msg);
+            theActivity.onPicPhotoHandler(msg);
 
-            mProgress.dismiss();
-            switch (msg.what) {
-                case PARSE_BARCODE_SUC:
-                    onResultHandler((String)msg.obj, scanBitmap);
-                    break;
-                case PARSE_BARCODE_FAIL:
-                    Toast.makeText(CodeCapture.this, (String) msg.obj, Toast.LENGTH_LONG).show();
-                    break;
-
-            }
         }
-
-    };
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

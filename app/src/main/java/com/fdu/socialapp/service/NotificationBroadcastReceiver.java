@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.activities.Login;
+import com.fdu.socialapp.activities.Main;
 import com.fdu.socialapp.activities.SingleChat;
 import com.fdu.socialapp.model.ChatManager;
 
@@ -28,8 +29,9 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver{
                 gotoSingleChatActivity(context, intent);
             } else if (Constants.NOTIFICATION_SINGLE_CHAT.equals(tag)) {
                 gotoSingleChatActivity(context, intent);
-            } else {
-                gotoSingleChatActivity(context, intent);
+            } else if (Constants.NOTIFICATION_SYSTEM.equals(tag)) {
+                gotoNewFriendActivity(context, intent);
+
             }
         }
     }
@@ -38,6 +40,12 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver{
         Intent startActivityIntent = new Intent(context, SingleChat.class);
         startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivityIntent.putExtra(Constants.MEMBER_ID, intent.getStringExtra(Constants.MEMBER_ID));
+        context.startActivity(startActivityIntent);
+    }
+
+    private void gotoNewFriendActivity(Context context, Intent intent) {
+        Intent startActivityIntent = new Intent(context, Main.class);
+        startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(startActivityIntent);
     }
 }

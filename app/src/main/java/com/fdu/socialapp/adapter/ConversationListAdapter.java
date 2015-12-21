@@ -3,6 +3,7 @@ package com.fdu.socialapp.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.fdu.socialapp.model.Room;
 import com.fdu.socialapp.viewholder.ConversationItemHolder;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public class ConversationListAdapter<T> extends RecyclerView.Adapter<ConversationItemHolder> {
 
-    private List<T> dataList = new ArrayList<T>();
+    private List<T> dataList = new ArrayList<>();
 
     public List<T> getDataList() {
         return dataList;
@@ -29,6 +30,16 @@ public class ConversationListAdapter<T> extends RecyclerView.Adapter<Conversatio
 
     public void addDataList(List<T> datas) {
         dataList.addAll(0, datas);
+    }
+
+    public void removeData(String id) {
+        for (T data : dataList) {
+            Room room = (Room) data;
+            if (room.getConversationId().equals(id)) {
+                dataList.remove(data);
+                break;
+            }
+        }
     }
 
     @Override

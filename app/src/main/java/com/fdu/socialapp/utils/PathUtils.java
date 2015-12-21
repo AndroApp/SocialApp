@@ -2,6 +2,7 @@ package com.fdu.socialapp.utils;
 
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.fdu.socialapp.model.ChatManager;
 
@@ -25,7 +26,7 @@ public class PathUtils {
     }
 
     /**
-     * @return
+     * @return file
      */
     private static File getAvailableCacheDir() {
         if (isExternalStorageWritable()) {
@@ -40,7 +41,7 @@ public class PathUtils {
      * 可能文件会被清除掉，需要检查是否存在
      *
      * @param id
-     * @return
+     * @return file
      */
     public static String getChatFilePath(String id) {
         return (TextUtils.isEmpty(id) ? null : new File(getAvailableCacheDir(), id).getAbsolutePath());
@@ -49,7 +50,7 @@ public class PathUtils {
     /**
      * 录音保存的地址
      *
-     * @return
+     * @return file
      */
     public static String getRecordPathByCurrentTime() {
         return new File(getAvailableCacheDir(), "record_" + System.currentTimeMillis()).getAbsolutePath();
@@ -73,4 +74,26 @@ public class PathUtils {
     public static String getAvatarTmpPath() {
         return new File(getAvailableCacheDir(), "avatar_tmp").getAbsolutePath();
     }
+
+
+    public static String getQRcodeImagePath() {
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MSNA_QRcode");
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("PathUtils", "failed to create directory");
+                return null;
+            }
+        }
+        return new File(mediaStorageDir.getPath() + File.separator +
+                "QRcode"+".PNG").getAbsolutePath();
+    }
+
 }
