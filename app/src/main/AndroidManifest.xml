@@ -47,6 +47,11 @@
 
         </activity>
 
+        <activity android:name=".activities.NewFriends"
+            android:label="NewFriends">
+
+        </activity>
+
         <service android:name="com.avos.avoscloud.PushService"
             android:exported="true" />
 

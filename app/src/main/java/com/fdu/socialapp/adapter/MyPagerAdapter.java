@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.fdu.socialapp.R;
+import com.fdu.socialapp.custom.ContactFragment;
 import com.fdu.socialapp.custom.ConversationFragment;
 import com.fdu.socialapp.custom.NavFragment;
 import com.fdu.socialapp.custom.PagerSlidingTabStrip;
@@ -23,13 +24,14 @@ import java.util.List;
 public class MyPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener, PagerSlidingTabStrip.IconTabProvider {
     private static final String TAG = "PagerAdapter";
     private final String[] TITLES = {"会话", "通讯录", "发现", "我"};
-    private final int[] CONTENTS = {R.id.contacts_layout, R.id.etc_layout, R.id.aboutme_layout};
+    private final int[] CONTENTS = {R.id.etc_layout, R.id.aboutme_layout};
     private final int[] ICONS = {R.drawable.ic_chat_black_24dp, R.drawable.ic_contacts_black_24dp, R.drawable.ic_public_black_24dp, R.drawable.ic_perm_identity_black_24dp};
     List<Fragment> fragments = new ArrayList<>();
 
     public MyPagerAdapter(FragmentManager fm) {
         super(fm);
         fragments.add(new ConversationFragment());
+        fragments.add(new ContactFragment());
         for (int content : CONTENTS) {
             NavFragment fragment = new NavFragment();
             Bundle args = new Bundle();

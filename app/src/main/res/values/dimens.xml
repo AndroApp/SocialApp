@@ -38,4 +38,10 @@
 
     <!-- input bottom bar -->
     <dimen name="chat_input_bar_height">55dp</dimen>
+
+    <!-- tip-->
+    <dimen name="tip_icon_size">10dp</dimen>
+
+    <!-- line-->
+    <dimen name="base_line_width_1">1dp</dimen>
 </resources>
