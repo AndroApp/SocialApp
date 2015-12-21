@@ -23,6 +23,7 @@ public class SingleChat extends BaseActivity {
     protected Toolbar toolbar;
 
     private ChatFragment chatFragment;
+    private String conversationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,9 @@ public class SingleChat extends BaseActivity {
             }
         });
 
-        String conversationId = getIntent().getStringExtra(Constants.CONVERSATION_ID);
+        conversationId = getIntent().getStringExtra(Constants.CONVERSATION_ID);
         if (conversationId != null) {
+            ChatManager.getInstance().getRoomsTable().clearUnread(conversationId);
             AVIMConversation con = ConversationCacheUtils.getCacheConversation(conversationId);
             chatFragment.setConversation(con);
             toolbar.setTitle(ConversationHelper.nameOfConversation(con));
@@ -52,6 +54,12 @@ public class SingleChat extends BaseActivity {
             getConversation(memberId);
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        ChatManager.getInstance().getRoomsTable().clearUnread(conversationId);
+        super.onBackPressed();
     }
 
     @Override
@@ -77,7 +85,9 @@ public class SingleChat extends BaseActivity {
             public void done(AVIMConversation avimConversation, AVIMException e) {
                 if (filterException(e)) {
                     chatFragment.setConversation(avimConversation);
-                    ChatManager.getInstance().getRoomsTable().insertRoom(avimConversation.getConversationId());
+                    conversationId = avimConversation.getConversationId();
+                    ChatManager.getInstance().getRoomsTable().insertRoom(conversationId);
+                    ChatManager.getInstance().getRoomsTable().clearUnread(conversationId);
                 }
             }
         });

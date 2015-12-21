@@ -1,5 +1,7 @@
 package com.fdu.socialapp.custom;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
@@ -21,6 +24,7 @@ import com.fdu.socialapp.activities.SingleChat;
 import com.fdu.socialapp.adapter.ConversationListAdapter;
 import com.fdu.socialapp.controller.ConversationHelper;
 import com.fdu.socialapp.event.ConversationItemClickEvent;
+import com.fdu.socialapp.event.ConversationItemLongClickEvent;
 import com.fdu.socialapp.event.ImTypeMessageEvent;
 import com.fdu.socialapp.model.ChatManager;
 import com.fdu.socialapp.model.ConversationType;
@@ -112,12 +116,30 @@ public class ConversationFragment extends BaseFragment implements ChatManager.Co
     }
 
     public void onEvent(ConversationItemClickEvent event) {
-        ChatManager.getInstance().getRoomsTable().clearUnread(event.conversationId);
+
         Intent intent = new Intent(getActivity(), SingleChat.class);
         intent.putExtra(Constants.CONVERSATION_ID, event.conversationId);
         startActivity(intent);
     }
 
+    public void onEvent(final ConversationItemLongClickEvent event) {
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("确认删除对话吗？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        itemAdapter.removeData(event.conversationId);
+                        itemAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+        }).create().show();
+    }
 
 
     private void updateConversationList() {
@@ -163,6 +185,7 @@ public class ConversationFragment extends BaseFragment implements ChatManager.Co
                 needCacheUsers.add(ConversationHelper.otherIdOfConversation(conversation));
             }
         }
+        needCacheUsers.add(ChatManager.getInstance().getSelfId());
         AVUserCacheUtils.cacheUsers(needCacheUsers, new AVUserCacheUtils.CacheUserCallback() {
             @Override
             public void done(Exception e) {

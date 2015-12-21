@@ -1,11 +1,14 @@
 package com.fdu.socialapp.avobject;
 
+import android.os.Parcel;
+
 import com.avos.avoscloud.AVClassName;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 
 /**
  * Created by mh on 2015/12/1.
+ *
  */
 @AVClassName("AddRequest")
 public class AddRequest extends AVObject {
@@ -23,6 +26,12 @@ public class AddRequest extends AVObject {
 
     public AddRequest() {
     }
+
+    public AddRequest(Parcel in){
+        super(in);
+    }
+
+    public static final Creator CREATOR = AVObjectCreator.instance;
 
     public AVUser getFromUser() {
         return getAVUser(FROM_USER);

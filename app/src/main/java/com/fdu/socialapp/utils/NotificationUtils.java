@@ -53,6 +53,9 @@ public class NotificationUtils {
         }
 
     }
+    public static void showNotification(Context context, String title, String content, Intent intent) {
+        showNotification(context, title, content, null, intent);
+    }
 
     public static void showNotification(Context context, String title, String content, String sound, Intent intent) {
         intent.setFlags(0);
@@ -80,4 +83,5 @@ public class NotificationUtils {
         }
         manager.notify(notificationId, notification);
     }
+
 }

@@ -12,6 +12,8 @@ import com.fdu.socialapp.adapter.AddFriendsAdapter;
 import com.fdu.socialapp.event.AddButtonClickEvent;
 import com.fdu.socialapp.model.MsnaUser;
 import com.fdu.socialapp.service.AddRequestManager;
+import com.fdu.socialapp.utils.PhotoUtils;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import butterknife.Bind;
 import de.greenrobot.event.EventBus;
@@ -47,7 +49,12 @@ public class AddFriendsViewHolder extends AVCommonViewHolder {
                 AddButtonClickEvent event = new AddButtonClickEvent();
                 event.user = user;
                 EventBus.getDefault().post(event);
+
             }
         });
+        ImageLoader.getInstance().displayImage(user.getAvatarUrl(), avatarView, PhotoUtils.avatarImageOptions);
+
     }
+
+
 }

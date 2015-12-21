@@ -11,6 +11,8 @@ import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.FollowCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
+import com.fdu.socialapp.service.CacheService;
+import com.fdu.socialapp.utils.AVUserCacheUtils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -23,9 +25,19 @@ public class MsnaUser extends AVUser{
     public static final String TAG = "MsnaUser";
     public static final String AVATAR = "avatar";
     public static final String USERNAME = "username";
+    public static final String NICKNAME = "nickname";
+    public static final transient Creator CREATOR;
+    static {
+        CREATOR = AVObjectCreator.instance;
+    }
+
 
     public static MsnaUser getCurrentUser() {
-        return getCurrentUser(MsnaUser.class);
+        return AVUser.getCurrentUser(MsnaUser.class);
+    }
+
+    public static MsnaUser getCachedCurrentUser() {
+        return AVUserCacheUtils.getCachedUser(ChatManager.getInstance().getSelfId());
     }
 
     public static boolean isLogin() {
@@ -37,7 +49,6 @@ public class MsnaUser extends AVUser{
         AVUser user = new AVUser();
         user.setUsername(name);
         user.setPassword(password);
-        user.put("num", 0);
         user.signUpInBackground(callback);
     }
     public void removeFriend(String friendId, final SaveCallback saveCallback) {
@@ -66,9 +77,8 @@ public class MsnaUser extends AVUser{
         }
     }
 
-    public static String getNickname() {
-        MsnaUser user = getCurrentUser();
-        return user.getString("nickname");
+    public String getNickname() {
+        return getString(NICKNAME);
     }
 
     public String getAvatarUrl() {

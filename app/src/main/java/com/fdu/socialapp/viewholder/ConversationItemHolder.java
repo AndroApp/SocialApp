@@ -11,6 +11,7 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.fdu.socialapp.controller.ConversationHelper;
 import com.fdu.socialapp.R;
 import com.fdu.socialapp.controller.MessageHelper;
+import com.fdu.socialapp.event.ConversationItemLongClickEvent;
 import com.fdu.socialapp.model.MsnaUser;
 import com.fdu.socialapp.service.ConversationManager;
 import com.fdu.socialapp.event.ConversationItemClickEvent;
@@ -57,7 +58,7 @@ public class ConversationItemHolder extends AVCommonViewHolder {
         AVIMConversation avimConversation = room.getConversation();
         if (ConversationHelper.isValidConversation(avimConversation)) {
             if (ConversationHelper.typeOfConversation(avimConversation) == ConversationType.Single) {
-                MsnaUser user = (MsnaUser) AVUserCacheUtils.getCachedUser(ConversationHelper.otherIdOfConversation(avimConversation));
+                MsnaUser user =  AVUserCacheUtils.getCachedUser(ConversationHelper.otherIdOfConversation(avimConversation));
                 if (user != null) {
                     ImageLoader.getInstance().displayImage(user.getAvatarUrl(), avatarView, PhotoUtils.avatarImageOptions);
                 }
@@ -76,7 +77,7 @@ public class ConversationItemHolder extends AVCommonViewHolder {
             if (lastMessage != null) {
                 SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA);
                 timeView.setText(format.format(new Date(lastMessage.getTimestamp())));
-                msgView.setText(MessageHelper.outlineOfMsg((AVIMTypedMessage) room.getLastMessage()));;
+                msgView.setText(MessageHelper.outlineOfMsg((AVIMTypedMessage) room.getLastMessage()));
             }
         }
 
@@ -86,6 +87,16 @@ public class ConversationItemHolder extends AVCommonViewHolder {
                 ConversationItemClickEvent itemClickEvent =  new ConversationItemClickEvent();
                 itemClickEvent.conversationId = room.getConversationId();
                 EventBus.getDefault().post(itemClickEvent);
+            }
+        });
+
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ConversationItemLongClickEvent itemLongClickEvent = new ConversationItemLongClickEvent();
+                itemLongClickEvent.conversationId = room.getConversationId();
+                EventBus.getDefault().post(itemLongClickEvent);
+                return true;
             }
         });
 

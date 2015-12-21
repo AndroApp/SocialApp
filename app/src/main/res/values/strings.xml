@@ -69,4 +69,23 @@
     <string name="contact_new_friends">新朋友</string>
     <string name="conversation_group">群组</string>
 
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="ERcodeScan">二维码扫描</string>
+    <string name="ERcodeUser">二维码名片</string>
+    <string name="back">返回</string>
+
+    <!-- Messages IDs -->
+    <item name="auto_focus" type="id" />
+    <item name="decode" type="id" />
+    <item name="decode_failed" type="id" />
+    <item name="decode_succeeded" type="id" />
+    <item name="encode_failed" type="id" />
+    <item name="encode_succeeded" type="id" />
+    <item name="launch_product_query" type="id" />
+    <item name="quit" type="id" />
+    <item name="restart_preview" type="id" />
+    <item name="return_scan_result" type="id" />
+    <item name="search_book_contents_failed" type="id" />
+    <item name="search_book_contents_succeeded" type="id" />
+
 </resources>

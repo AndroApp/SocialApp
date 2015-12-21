@@ -78,7 +78,6 @@ public class Login extends BaseActivity {
         AVInstallation installation = AVInstallation.getCurrentInstallation();
         if (installation != null) {
             user.put(Constants.INSTALLATION, installation);
-            //user.put("num", 1);
             user.saveInBackground();
             ChatManager.getInstance().setupManagerWithUserId(user.getObjectId());
             //根据用户名生成一个Client

@@ -42,6 +42,7 @@ public class NavFragment extends BaseFragment {
     private static final String TAG="NavFragment";
     private static final int IMAGE_PICK_REQUEST = 1;
     private static final int CROP_REQUEST = 2;
+    private ImageView avatar;
 
     public NavFragment() {
         // Empty constructor required for fragment subclasses
@@ -78,14 +79,15 @@ public class NavFragment extends BaseFragment {
                     }
                 });
 
-                final ImageView avatar = (ImageView) view.findViewById(R.id.userIcon);
+                avatar = (ImageView) view.findViewById(R.id.userIcon);
                 getAvatar(avatar);
                 view.findViewById(R.id.userInfo).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setAvatar(avatar);
+                        setAvatar();
                     }
                 });
+
                 break;
 
             case R.id.etc_layout:
@@ -99,7 +101,7 @@ public class NavFragment extends BaseFragment {
     }
 
     private void getAvatar(ImageView avatar) {
-        MsnaUser user = MsnaUser.getCurrentUser();
+        MsnaUser user = MsnaUser.getCachedCurrentUser();
         ImageLoader.getInstance().displayImage(user.getAvatarUrl(), avatar, PhotoUtils.avatarImageOptions);
     }
 
@@ -116,7 +118,7 @@ public class NavFragment extends BaseFragment {
 
 
     private void getNickname(TextView nickname) {
-        String nicknameStr = MsnaUser.getNickname();
+        String nicknameStr = MsnaUser.getCachedCurrentUser().getNickname();
         if (nicknameStr != null) {
             nickname.setText(nicknameStr);
         } else {
@@ -163,8 +165,12 @@ public class NavFragment extends BaseFragment {
                 .show();
     }
 
-    protected void toast(String str) {
-        Toast.makeText(this.getActivity(), str, Toast.LENGTH_SHORT).show();
+
+
+    private void setAvatar() {
+        Intent intent = new Intent(Intent.ACTION_PICK, null);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        startActivityForResult(intent, IMAGE_PICK_REQUEST);
     }
 
     @Override
@@ -182,13 +188,6 @@ public class NavFragment extends BaseFragment {
         }
     }
 
-
-
-    private void setAvatar(ImageView avatar) {
-        Intent intent = new Intent(Intent.ACTION_PICK, null);
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-        startActivityForResult(intent, IMAGE_PICK_REQUEST);
-    }
 
     private Uri startImageCrop(Uri uri, int outputX, int outputY,
                               int requestCode) {
@@ -228,5 +227,7 @@ public class NavFragment extends BaseFragment {
         return path;
     }
 
-
+    protected void toast(String str) {
+        Toast.makeText(this.getActivity(), str, Toast.LENGTH_SHORT).show();
+    }
 }
