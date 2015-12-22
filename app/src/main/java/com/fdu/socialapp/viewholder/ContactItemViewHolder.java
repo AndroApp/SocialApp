@@ -1,11 +1,14 @@
 package com.fdu.socialapp.viewholder;
 
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fdu.socialapp.Constants;
 import com.fdu.socialapp.R;
+import com.fdu.socialapp.activities.SingleChat;
 import com.fdu.socialapp.avobject.SortUser;
 import com.fdu.socialapp.model.MsnaUser;
 
@@ -45,5 +48,16 @@ public class ContactItemViewHolder extends AVCommonViewHolder {
         }else {
             alpha.setVisibility(View.GONE);
         }
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(getContext(), SingleChat.class);
+                intent.putExtra(Constants.MEMBER_ID, sortUser.getInnerUser().getObjectId());
+                intent.putExtra(Constants.MEMBER_NAME,sortUser.getInnerUser().getUsername());
+                getContext().startActivity(intent);
+            }
+        });
     }
 }

@@ -5,6 +5,7 @@ import android.os.Parcel;
 import com.avos.avoscloud.AVClassName;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
+import com.fdu.socialapp.model.MsnaUser;
 
 /**
  * Created by mh on 2015/12/1.
@@ -33,8 +34,8 @@ public class AddRequest extends AVObject {
 
     public static final Creator CREATOR = AVObjectCreator.instance;
 
-    public AVUser getFromUser() {
-        return getAVUser(FROM_USER);
+    public MsnaUser getFromUser() {
+        return getAVUser(FROM_USER, MsnaUser.class);
     }
 
     public void setFromUser(AVUser fromUser) {

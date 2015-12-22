@@ -103,13 +103,14 @@ public class NewFriends extends BaseActivity {
                     event.addRequest.deleteInBackground(new DeleteCallback() {
                         @Override
                         public void done(AVException e) {
-                            getAddRequestInBackground(adapter.getItemCount(),Constants.PAGE_SIZE);
+                            if (filterException(e))
+                                getAddRequestInBackground(adapter.getItemCount(),Constants.PAGE_SIZE);
                         }
                     });
                 }catch (Exception e){
                     Log.e(TAG,e.getMessage());
                 }
             }
-        }).setNegativeButton("取消",null);
+        }).setNegativeButton("取消",null).show();
     }
 }

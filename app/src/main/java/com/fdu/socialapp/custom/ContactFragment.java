@@ -3,6 +3,7 @@ package com.fdu.socialapp.custom;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -38,7 +39,7 @@ import butterknife.ButterKnife;
 /**
  * Created by mh on 2015/12/8.
  */
-public class ContactFragment extends BaseFragment{
+public class ContactFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
     private TextView dialog;
@@ -47,6 +48,8 @@ public class ContactFragment extends BaseFragment{
     private LinearLayoutManager linearLayoutManager;
     private LinearLayout newFriend;
     private ContactAdapter<SortUser> contactAdapter;
+
+    private boolean hidden = false;
 
     @Nullable
     @Override
@@ -60,23 +63,51 @@ public class ContactFragment extends BaseFragment{
         initRecyclerView();
         initEnLetterView();
         initNewFriend();
+        try {
+            findFriends();
+            Log.i("mh","create view");
+        } catch (Exception e) {
+            Log.e("MSNA", e.getMessage());
+        }
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            findFriends();
-        }catch (Exception e){
-            Log.e("MSNA",e.getMessage());
+        if (!hidden){
+            try {
+                findFriends();
+                Log.i("mh","resume");
+            } catch (Exception e) {
+                Log.e("MSNA", e.getMessage());
+            }
         }
-
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        try {
+            findFriends();
+            Log.i("mh","activity created");
+        }catch (Exception e){
+            Log.e("MSNA",e.getMessage());
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        this.hidden = hidden;
+        if(!hidden) {
+            try {
+                findFriends();
+                Log.i("mh","hidden changed");
+            } catch (Exception e) {
+                Log.e("MSNA", e.getMessage());
+            }
+        }
     }
 
     private void initRecyclerView(){
@@ -116,7 +147,7 @@ public class ContactFragment extends BaseFragment{
             @Override
             public void done(List<MsnaUser> msnaUsers, AVException e) {
                 if (e != null) {
-                    Log.e("MSNA",e.getMessage());
+                    Log.e("MSNA", e.getMessage());
                 } else {
                     try {
                         friends.addAll(msnaUsers);
@@ -130,10 +161,10 @@ public class ContactFragment extends BaseFragment{
                         for (AVUser user : friends) {
                             newFriends.add(CacheService.lookupUser(user.getObjectId()));
                         }
-                        contactAdapter.setDataList(sortUsers(newFriends));
+                        contactAdapter.addDataList(sortUsers(newFriends));
                         contactAdapter.notifyDataSetChanged();
-                    }catch (Exception ce){
-                        Log.e("MSNA",ce.getMessage());
+                    } catch (Exception ce) {
+                        Log.e("MSNA", ce.getMessage());
                     }
                 }
             }

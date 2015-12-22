@@ -20,10 +20,10 @@
     <color name="window_background">#CC000000</color>
 
 
-    <color name="myPrimary">#00BCD4</color>
-    <color name="myPrimaryDark">#0097A7</color>
-    <color name="myPrimaryLight">#4DD0E1</color>
-    <color name="myAccent">#18FFFF</color>
+    <color name="myPrimary">#3F51B5</color>
+    <color name="myPrimaryDark">#303f9f</color>
+    <color name="myPrimaryLight">#7986CB</color>
+    <color name="myAccent">#FF4081</color>
     <color name="myDivider">#B6B6B6</color>
 
     <color name="result_view">#b0000000</color>

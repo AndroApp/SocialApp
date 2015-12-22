@@ -31,7 +31,7 @@ public class Launch extends BaseActivity {
         }
     }
 
-    public void updateUserInfo(final MsnaUser user) {
+    public void  updateUserInfo(final MsnaUser user) {
         AVInstallation installation = AVInstallation.getCurrentInstallation();
         if (installation != null) {
             user.put(Constants.INSTALLATION, installation);
@@ -40,6 +40,7 @@ public class Launch extends BaseActivity {
                 public void done(AVException e) {
                     if (filterException(e)) {
                         //根据用户名生成一个Client
+                        ChatManager.getInstance().setupManagerWithUserId(user.getObjectId());
                         ChatManager.getInstance().open(new AVIMClientCallback() {
                             @Override
                             public void done(AVIMClient avimClient, AVIMException e) {
@@ -54,6 +55,9 @@ public class Launch extends BaseActivity {
                             }
                         });
 
+                    } else {
+                        Login.goLoginActivityFromActivity(Launch.this);
+                        finish();
                     }
                 }
             });

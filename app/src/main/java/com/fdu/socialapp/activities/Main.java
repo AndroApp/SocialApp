@@ -43,8 +43,10 @@ import com.fdu.socialapp.custom.PagerSlidingTabStrip;
 import com.fdu.socialapp.decoding.QRcodeController;
 import com.fdu.socialapp.model.ChatManager;
 import com.fdu.socialapp.model.MsnaUser;
+import com.fdu.socialapp.service.AddRequestManager;
 import com.fdu.socialapp.service.CacheService;
 import com.fdu.socialapp.service.PushManager;
+import com.fdu.socialapp.utils.AVUserCacheUtils;
 import com.fdu.socialapp.utils.DisplayUtil;
 import com.fdu.socialapp.utils.PathUtils;
 import com.fdu.socialapp.utils.PhotoUtils;
@@ -124,6 +126,28 @@ public class Main extends BaseActivity {
             //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
             return true;
+        }
+
+        if (id == R.id.startSessions) {
+            final EditText txtUserName = new EditText(this);
+            AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(this);
+            builder.setTitle("请输入用户名")
+                    .setNegativeButton("取消", null)
+                    .setView(txtUserName)
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String userName = txtUserName.getText().toString().trim();
+                            if (userName.length() > 0) {
+                                sendAMessage(userName);
+                            }
+                        }
+                    });
+            final AlertDialog dialog;
+            dialog = builder.create();
+            dialog.show();
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -210,13 +234,16 @@ public class Main extends BaseActivity {
                     intent.setData(uri);
                     Main.this.sendBroadcast(intent);
                 }
-            });
+            })
+            .setNegativeButton("取消", null);
         final AlertDialog dialog;
         dialog = builder.create();
         dialog.show();
     }
 
-    public void setUserInfoDialog(String userId) {
+
+
+    public void setUserInfoDialog(final String userId) {
 
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(this);
@@ -254,7 +281,25 @@ public class Main extends BaseActivity {
         linearLayout.setPadding(0, 20, 0, 0);
         builder.setView(linearLayout);
         builder.setTitle("确认添加好友")
-                .setPositiveButton("确认", null)
+                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AVQuery<MsnaUser> q = AVUser.getQuery(MsnaUser.class);
+                        q.whereEqualTo(Constants.OBJECT_ID, userId);
+                        q.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
+                        q.findInBackground(new FindCallback<MsnaUser>() {
+                            @Override
+                            public void done(List<MsnaUser> list, AVException e) {
+                                if (filterException(e)) {
+                                    if (list.size() > 0) {
+                                        AddRequestManager.getInstance().createAddRequestInBackground(Main.this,list.get(0));
+                                        AVUserCacheUtils.cacheUser(userId,list.get(0));
+                                    }
+                                }
+                            }
+                        });
+                    }
+                })
                 .setNegativeButton("取消", null);
         Dialog dialog = builder.create();
         dialog.show();
@@ -265,14 +310,10 @@ public class Main extends BaseActivity {
 
 
 
-    public void send(View view) {
-        EditText testUser = (EditText) findViewById(R.id.testMessage);
-        final String userName = testUser.getText().toString().trim();
-
+    public void sendAMessage(final String userName) {
         AVQuery<AVUser> query = MsnaUser.getQuery();
         query.whereEqualTo("username", userName);
         query.limit(1);
-
         query.findInBackground(new FindCallback<AVUser>() {
             @Override
             public void done(List<AVUser> list, AVException e) {
@@ -287,7 +328,5 @@ public class Main extends BaseActivity {
                 }
             }
         });
-
     }
-
 }

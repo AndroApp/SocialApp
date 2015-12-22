@@ -52,7 +52,7 @@ public class EnLetterView extends View {
             paint.setColor(getResources().getColor(R.color.TextColorDark));
             paint.setTypeface(Typeface.DEFAULT_BOLD);
             paint.setAntiAlias(true);
-            paint.setTextSize(20);
+            paint.setTextSize(24);
             if (i == choose) {
                 paint.setColor(Color.parseColor("#3399ff"));
                 paint.setFakeBoldText(true);

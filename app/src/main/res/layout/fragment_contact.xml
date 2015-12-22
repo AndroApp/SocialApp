@@ -39,10 +39,9 @@
 
         <com.fdu.socialapp.custom.EnLetterView
             android:id="@+id/right_letter"
-            android:layout_width="25dp"
+            android:layout_width="28dp"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:background="@color/gray"/>
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 

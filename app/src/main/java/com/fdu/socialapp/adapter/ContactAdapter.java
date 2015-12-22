@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.fdu.socialapp.avobject.SortUser;
+import com.fdu.socialapp.model.MsnaUser;
 import com.fdu.socialapp.viewholder.ContactItemViewHolder;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 
 /**
  * Created by mh on 2015/12/8.
+ *
  */
 public class ContactAdapter<T> extends RecyclerView.Adapter<ContactItemViewHolder> {
 
@@ -21,6 +23,27 @@ public class ContactAdapter<T> extends RecyclerView.Adapter<ContactItemViewHolde
         if (datas != null){
             dataList.addAll(datas);
         }
+    }
+
+    public void addDataList(List<T> datas){
+        if (datas != null) {
+            for (T data:datas){
+                if (!dataListContains(data)){
+                    dataList.add(data);
+                }
+            }
+        }
+    }
+
+    private boolean dataListContains(T d){
+        SortUser user = (SortUser)d;
+        for (T data:dataList){
+            SortUser user0 = (SortUser)data;
+            if (user.getInnerUser().getObjectId().equals(user0.getInnerUser().getObjectId())){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

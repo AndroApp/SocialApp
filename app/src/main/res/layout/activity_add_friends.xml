@@ -6,31 +6,41 @@
     android:layout_height="match_parent"
     tools:context="com.fdu.socialapp.activities.AddFriends">
 
-    <include layout="@layout/toolbar_add_friends"></include>
+    <include layout="@layout/toolbar_add_friends"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="70dp">
 
         <EditText
             android:id="@+id/searchNameEdit"
             android:layout_width="0dp"
-            android:layout_height="39dp"
+            android:layout_height="59dp"
             android:layout_margin="10dp"
             android:layout_weight="1.0"
             android:hint="@string/chat_common_username"
             android:paddingLeft="5dp"
             android:singleLine="true"
             android:textSize="18sp"
-            android:textColorHint="@color/gray"/>
+            android:textColorHint="@color/common_gray"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5dp">
+            <Button
+                android:id="@+id/searchBtn"
+                android:layout_width="70dp"
+                android:layout_height="36dp"
+                android:layout_marginRight="18dp"
+                android:layout_marginTop="21dp"
+                android:background="@drawable/common_btn"            android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:text="@string/chat_search"/>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/searchBtn"
-            android:layout_width="60dp"
-            android:layout_height="39dp"
-            android:layout_margin="10dp"
-            android:text="@string/chat_search"/>
+
 
     </LinearLayout>
 

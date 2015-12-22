@@ -9,7 +9,7 @@
         android:id="@+id/userInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="48dp"
         android:background="@drawable/titlebar"
         android:orientation="horizontal"
         android:elevation="2dp"
@@ -34,9 +34,9 @@
 
     <LinearLayout
         android:id="@+id/nickname_layout"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="35dp"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="65dp"
         android:background="@drawable/titlebar"
         android:elevation="2dp"
         android:orientation="horizontal">
@@ -56,8 +56,8 @@
                 android:id="@+id/nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="15dp"
                 android:textSize="16sp"
                 android:text="未设置"
                 android:layout_gravity="end"/>
@@ -67,9 +67,9 @@
 
     <LinearLayout
         android:id="@+id/ErCode_layout"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="35dp"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="65dp"
         android:background="@drawable/titlebar"
         android:elevation="2dp"
         android:orientation="horizontal"
@@ -88,30 +88,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/backgroud">
-        <LinearLayout
-            android:layout_marginTop="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:orientation="horizontal">
-            <EditText
-                android:id="@+id/testMessage"
-                style="@style/TextStyle"
-                android:textSize="22sp"
-                android:layout_gravity="center"/>
-            <Button
-                android:id="@+id/test"
-                android:layout_marginStart="8dp"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:text="Send"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:background="@drawable/round_button"
-                android:onClick="send"/>
-        </LinearLayout>
-
     </LinearLayout>
 
 

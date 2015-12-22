@@ -65,8 +65,10 @@ public class MsnaUser extends AVUser{
     public void findFriendsWithCachePolicy(AVQuery.CachePolicy cachePolicy, FindCallback<MsnaUser>
             findCallback) {
         AVQuery<MsnaUser> q = null;
+        AVQuery<MsnaUser> q1 = null;
         try {
             q = followeeQuery(MsnaUser.class);
+            q1 = followerQuery(MsnaUser.class);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
@@ -74,6 +76,11 @@ public class MsnaUser extends AVUser{
             q.setCachePolicy(cachePolicy);
             q.setMaxCacheAge(TimeUnit.MINUTES.toMillis(1));
             q.findInBackground(findCallback);
+        }
+        if (q1 != null){
+            q1.setCachePolicy(cachePolicy);
+            q1.setMaxCacheAge(TimeUnit.MINUTES.toMillis(1));
+            q1.findInBackground(findCallback);
         }
     }
 

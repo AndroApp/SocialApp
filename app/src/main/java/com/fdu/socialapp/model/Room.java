@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by mao on 2015/11/17 0017.
+ *
  */
 public class Room {
     private static String TAG = "Room";
